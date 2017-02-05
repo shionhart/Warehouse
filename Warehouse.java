@@ -189,20 +189,14 @@ public class Warehouse implements Serializable {
    public String toString() {
 
       // add what information we want to print in our toString Method
-      return "UNIMPLEMENTED TOSTRING FOR WAREHOUSE";
-   }
-
-   // Remove later, was used to test class communication
-   public String printVar1() {
-      return clientList.var1;
+      return "UNIMPLEMENTED toString FOR WAREHOUSE";
    }
 
    public static void main(String[] s) {
       System.out.println("Welcome to the Warehouse class.");
-      Warehouse w = Warehouse.instance();
+      System.out.println("------------ Warehouse Main is purely for testing purposes ------------");
 
-      // remove later, just a test
-      System.out.println(w.printVar1());
+      Warehouse w = Warehouse.instance();
 
       // Test case start: Add client(s) to the system and print the client (manually verify it is there)
       // Note: duplicate data is currently allowed

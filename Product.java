@@ -8,7 +8,6 @@ public class Product implements Serializable {
    private String id;
    private List<String> supplierIds;
 
-   // Not sure why this is needed yet
    private static final String PRODUCT_STRING = "P";
 
 
@@ -26,7 +25,6 @@ public class Product implements Serializable {
       return id;
    }
 
-   // test function I don't know if we need
    public int getSupplierCount() {
       return supplierIds.size();
    }

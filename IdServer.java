@@ -1,12 +1,8 @@
 import java.io.*;
 
-// Copied from professor
 public class IdServer implements Serializable {
 
-   // used?
    private static final long serialVersionUID = 1L;
-   
-   
    private  int idCounter;
    private static IdServer server;
    private IdServer() {

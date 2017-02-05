@@ -72,8 +72,6 @@ public class SupplierList implements Serializable {
       return suppliers.toString();
    }
 
-   // remove later, used for testing the classes
-   public String var1 = "This is a string in SupplierList for testing"; 
    public static void main(String[] s) {
       System.out.println("Welcome to the SupplierList class.");
    }

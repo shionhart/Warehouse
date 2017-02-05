@@ -61,8 +61,6 @@ public class ClientList implements Serializable {
       return clients.toString();
    }
 
-   // remove later, used for testing the classes
-   public String var1 = "This is a string in ClientList for testing"; 
    public static void main(String[] s) {
       System.out.println("Welcome to the ClientList class.");
    }
