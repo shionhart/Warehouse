@@ -40,7 +40,11 @@ public class Product implements Serializable {
       return supplierIds.add(supplierId);
    }
 
+   public boolean removeSupplier(String supplierId) {
+      return supplierIds.remove(supplierId);
+   }
+
    public String toString() {
-      return "Product id:" + id + " name:" + name;
+      return "Product id:" + id + " name:" + name + " suppliers:" + supplierIds;
    }
 }

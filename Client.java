@@ -6,13 +6,7 @@ public class Client implements Serializable {
    private String name;
    private String id;
 
-   // Not sure why this is needed yet
    private static final String CLIENT_STRING = "C";
-
-
-   // private List booksBorrowed = new LinkedList();
-   // private List booksOnHold = new LinkedList();
-   // private List transactions = new LinkedList();
    
    public Client(String name) {
       this.name = name;

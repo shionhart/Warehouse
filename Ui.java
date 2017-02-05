@@ -16,9 +16,10 @@ public class Ui {
    private static final int SHOW_SUPPLIERS = 5;
    private static final int SHOW_PRODUCTS = 6;
    private static final int ASSOCIATE_PRODUCT_AND_SUPPLIER = 7;
-   private static final int SAVE = 13;
-   private static final int RETRIEVE = 14;
-   private static final int HELP = 15;
+   private static final int DISASSOCIATE_PRODUCT_AND_SUPPLIER = 8;
+   private static final int SAVE = 9;
+   private static final int RETRIEVE = 10;
+   private static final int HELP = 11;
 
    private Ui() {
       if (yesOrNo("Look for saved data and  use it?")) {
@@ -85,7 +86,7 @@ public class Ui {
    }
 
    public void help() {
-      System.out.println("Enter a integer number between 0 and 15 as explained below:");
+      System.out.println("Enter a integer number between 0 and 11 as explained below:");
       System.out.println(EXIT + " to exit");
       System.out.println(ADD_CLIENT + " to add a client");
       System.out.println(ADD_SUPPLIER + " to add a supplier");
@@ -93,9 +94,10 @@ public class Ui {
       System.out.println(SHOW_CLIENTS + " to list all clients");
       System.out.println(SHOW_SUPPLIERS + " to list all suppliers");
       System.out.println(SHOW_PRODUCTS + " to list all products");
-      System.out.println(ASSOCIATE_PRODUCT_AND_SUPPLIER + " to add a product to a supplier");
-      System.out.println(SAVE + " to  save data");
-      System.out.println(RETRIEVE + " to  retrieve");
+      System.out.println(ASSOCIATE_PRODUCT_AND_SUPPLIER + " to associate a product and supplier");
+      System.out.println(DISASSOCIATE_PRODUCT_AND_SUPPLIER + " to disassociate a product and supplier");
+      System.out.println(SAVE + " to save data");
+      System.out.println(RETRIEVE + " to retrieve");
       System.out.println(HELP + " for help");
    }
 
@@ -154,8 +156,61 @@ public class Ui {
       }
    }
 
-   // placeholder
-   public void assignSupplier() {}
+   public void associateProductAndSupplier() {
+      String supplierId;
+      Supplier supplier;
+      String productId;
+      Product product;
+
+      do {
+         supplierId = getToken("Enter supplier id");
+         supplier = warehouse.findSupplier(supplierId);
+
+         if (supplier == null) {
+            System.out.println("Invalid supplier id, please try again.");
+         }
+      } while (supplier == null); 
+
+      do {
+         productId = getToken("Enter product id");
+         product = warehouse.findProduct(productId);
+
+         if (product == null) {
+            System.out.println("Invalid product id, please try again.");
+         }
+      } while (product == null); 
+
+      product = warehouse.associateProductAndSupplier(productId, supplierId);
+      System.out.println("Associate complete between product:" + product + " and supplier:" + supplier);
+   }
+
+   public void disassociateProductAndSupplier() {
+      String supplierId;
+      Supplier supplier;
+      String productId;
+      Product product;
+
+      do {
+         supplierId = getToken("Enter supplier id");
+         supplier = warehouse.findSupplier(supplierId);
+
+         if (supplier == null) {
+            System.out.println("Invalid supplier id, please try again.");
+         }
+      } while (supplier == null); 
+
+      do {
+         productId = getToken("Enter product id");
+         product = warehouse.findProduct(productId);
+
+         if (product == null) {
+            System.out.println("Invalid product id, please try again.");
+         }
+      } while (product == null); 
+
+      product = warehouse.disassociateProductAndSupplier(productId, supplierId);
+      System.out.println("Disassociate complete between product:" + product + " and supplier:" + supplier);
+   }
 
 
    public void process() {
@@ -172,7 +227,8 @@ public class Ui {
             case SHOW_CLIENTS:                   showClients();    break;
             case SHOW_SUPPLIERS:                 showSuppliers();  break;
             case SHOW_PRODUCTS:                  showProducts();   break;
-            case ASSOCIATE_PRODUCT_AND_SUPPLIER: assignSupplier(); break;
+            case ASSOCIATE_PRODUCT_AND_SUPPLIER: associateProductAndSupplier(); break;
+            case DISASSOCIATE_PRODUCT_AND_SUPPLIER: disassociateProductAndSupplier(); break;
          }
       }
    }

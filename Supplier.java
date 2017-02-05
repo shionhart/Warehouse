@@ -7,7 +7,6 @@ public class Supplier implements Serializable {
    private String id;
    private List<String> productIds;
 
-   // Not sure why this is needed yet
    private static final String SUPPLIER_STRING = "S";
    
    public Supplier(String name) {
@@ -43,9 +42,12 @@ public class Supplier implements Serializable {
    public boolean addProduct(String productId) {
       return productIds.add(productId);
    }
+
+   public boolean removeProduct(String productId) {
+      return productIds.remove(productId);
+   }
   
    public String toString() {
-      String string = "Supplier id:" + id + " name:" + name;
-      return string;
+      return "Supplier id:" + id + " name:" + name + " products:" + productIds;
   }
 }

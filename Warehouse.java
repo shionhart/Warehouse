@@ -22,7 +22,9 @@ public class Warehouse implements Serializable {
    // Singleton accessor for the warehouse instance
    public static Warehouse instance() {
       if (warehouse == null) {
-         //ClientIdServer.instance(); // instantiate all singletons
+
+         // instantiate all singletons
+         IdServer.instance(); 
          return (warehouse = new Warehouse());
       } else {
          return warehouse;
@@ -80,18 +82,27 @@ public class Warehouse implements Serializable {
       return inventory.find(productId);
    }
 
-   public Product assignSupplier(String productId, String supplierId) {
+   public Product associateProductAndSupplier(String productId, String supplierId) {
       Product product = inventory.find(productId);
 
       if (product != null) {
          Supplier supplier = supplierList.find(supplierId);
 
-         // -------------------
-         // Not sure how we want to handle the booleans being returned
-         // Maybe they can be void and not boolean???
-         // -------------------
          boolean linkStoP = product.addSupplier(supplierId);
          boolean linkPtoS = supplier.addProduct(productId);
+      }
+
+      return product;
+   }
+
+   public Product disassociateProductAndSupplier(String productId, String supplierId) {
+      Product product = inventory.find(productId);
+
+      if (product != null) {
+         Supplier supplier = supplierList.find(supplierId);
+
+         boolean unlinkStoP = product.removeSupplier(supplierId);
+         boolean unlinkPtoS = supplier.removeProduct(productId);
       }
 
       return product;
@@ -237,10 +248,6 @@ public class Warehouse implements Serializable {
       }
       // Test case end
 
-      // ------------------------------------------------------------------
-      // Do we want/need a separate id server for supplier/client/product
-      // ------------------------------------------------------------------
-
       // Test case start: Add product(s) to the inventory in the system and print the product (manually verify it is there)
       // Note: duplicate data is currently allowed
       // Expected output:
@@ -292,7 +299,7 @@ public class Warehouse implements Serializable {
       // Check supplier's product count initially
       System.out.println("Supplier:" + s1.getName() + " has:" + s1.getProductCount() + " products initially");
 
-      w.assignSupplier(p1.getId(), s1.getId());
+      w.associateProductAndSupplier(p1.getId(), s1.getId());
 
       // Check product's supplier count after addition
       System.out.println("Product:" + p1.getName() + " has:" + p1.getSupplierCount() + " suppliers after addition");
