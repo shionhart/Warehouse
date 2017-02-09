@@ -1,17 +1,17 @@
 import java.io.*;
 
-public class IdServer implements Serializable {
+public class SupplierIdServer implements Serializable {
 
    private static final long serialVersionUID = 1L;
    private  int idCounter;
-   private static IdServer server;
-   private IdServer() {
+   private static SupplierIdServer server;
+   private SupplierIdServer() {
       idCounter = 1;
    }
    
-   public static IdServer instance() {
+   public static SupplierIdServer instance() {
       if (server == null) {
-         return (server = new IdServer());
+         return (server = new SupplierIdServer());
       } else {
          return server;
       }
@@ -22,12 +22,12 @@ public class IdServer implements Serializable {
    }
    
    public String toString() {
-      return ("IdServer" + idCounter);
+      return ("SupplierIdServer" + idCounter);
    }
   
    public static void retrieve(ObjectInputStream input) {
       try {
-         server = (IdServer) input.readObject();
+         server = (SupplierIdServer) input.readObject();
       } catch(IOException ioe) {
          ioe.printStackTrace();
       } catch(Exception cnfe) {
@@ -48,7 +48,7 @@ public class IdServer implements Serializable {
       try {
          input.defaultReadObject();
          if (server == null) {
-            server = (IdServer) input.readObject();
+            server = (SupplierIdServer) input.readObject();
          } else {
             input.readObject();
          }

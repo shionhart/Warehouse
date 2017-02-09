@@ -10,7 +10,7 @@ public class Client implements Serializable {
    
    public Client(String name) {
       this.name = name;
-      this.id = CLIENT_STRING + (IdServer.instance()).getId();
+      this.id = CLIENT_STRING + (ClientIdServer.instance()).getId();
    }
 
    public String getName() {

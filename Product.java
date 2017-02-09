@@ -14,7 +14,7 @@ public class Product implements Serializable {
    public Product(String name) {
       this.name = name;
       this.supplierIds = new LinkedList<String>();
-      this.id = PRODUCT_STRING + (IdServer.instance()).getId();
+      this.id = PRODUCT_STRING + (ProductIdServer.instance()).getId();
    }
 
    public String getName() {

@@ -11,7 +11,7 @@ public class Supplier implements Serializable {
    
    public Supplier(String name) {
       this.name = name;
-      this.id = SUPPLIER_STRING + (IdServer.instance()).getId();
+      this.id = SUPPLIER_STRING + (SupplierIdServer.instance()).getId();
       this.productIds = new LinkedList<String>();
    }
 

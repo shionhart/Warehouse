@@ -24,7 +24,10 @@ public class Warehouse implements Serializable {
       if (warehouse == null) {
 
          // instantiate all singletons
-         IdServer.instance(); 
+         ProductIdServer.instance(); 
+         SupplierIdServer.instance(); 
+         ClientIdServer.instance(); 
+
          return (warehouse = new Warehouse());
       } else {
          return warehouse;
@@ -151,7 +154,9 @@ public class Warehouse implements Serializable {
          FileOutputStream file = new FileOutputStream("WarehouseData");
          ObjectOutputStream output = new ObjectOutputStream(file);
          output.writeObject(warehouse);
-         output.writeObject(IdServer.instance());
+         output.writeObject(ProductIdServer.instance());
+         output.writeObject(SupplierIdServer.instance());
+         output.writeObject(ClientIdServer.instance());
          return true;
       } catch(IOException ioe) {
          ioe.printStackTrace();
