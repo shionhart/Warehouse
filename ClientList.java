@@ -6,6 +6,7 @@ public class ClientList implements Serializable {
 
    // The "List" is used to maintain the actual client list
    private List<Client> clients = new LinkedList<Client>();
+   private List<Client> clientsWithBalance = new LinkedList<Client>();
 
    // This variable is used for the singleton "ClientList" instance
    private static ClientList clientList;
@@ -21,12 +22,49 @@ public class ClientList implements Serializable {
       }
    }
 
+   public boolean isEmpty() {
+      return clients.size() == 0;
+   }
+
    public boolean insertClient(Client client) {
       return clients.add(client);
    }
 
-   public Iterator getClients(){
+   public Iterator<Client> getClients(){
       return clients.iterator();
+   }
+
+   public boolean hasUnpaid() {
+      for (Iterator<Client> allClients = clients.iterator(); allClients.hasNext();) {
+         Client client = allClients.next();
+         if (client.getBalance() > 0) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   // terrible design, because it is extremely inefficient
+   public Iterator<Client> getUnpaid() {
+      // compile unpaid list and return the iterator for it
+
+      for (Iterator<Client> allClients = clients.iterator(); allClients.hasNext();) {
+         Client client = allClients.next();
+         if (client.getBalance() > 0) {
+            clientsWithBalance.add(client);
+         }
+      }
+      return clientsWithBalance.iterator();
+   }
+
+   public Client find(String clientId) {
+      for (Iterator<Client> allClients = clients.iterator(); allClients.hasNext();) {
+         Client client = allClients.next();
+         if (client.getId().equals(clientId)) {
+            return client;
+         }
+      }
+      return null;
    }
   
    private void writeObject(java.io.ObjectOutputStream output) {

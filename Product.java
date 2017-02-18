@@ -4,17 +4,30 @@ import java.io.*;
 
 public class Product implements Serializable {
    private static final long serialVersionUID = 1L;
+   private static final String PRODUCT_STRING = "P";
    private String name;
    private String id;
+   private int quantity;
+   private float price;
    private List<String> supplierIds;
+   private Queue<WaitlistItem> waitlistedOrders;
 
-   private static final String PRODUCT_STRING = "P";
 
-
-   public Product(String name) {
-      this.name = name;
-      this.supplierIds = new LinkedList<String>();
+   public Product(String name, float price) {
       this.id = PRODUCT_STRING + (ProductIdServer.instance()).getId();
+      this.name = name;
+      this.price = price;
+      this.quantity = 100;
+      this.supplierIds = new LinkedList<String>();
+      this.waitlistedOrders = new LinkedList<WaitlistItem>();
+   }
+
+   public int getQuantity() {
+      return quantity;
+   }
+
+   public void setQuantity(int amount) {
+      quantity = amount;
    }
 
    public String getName() {
@@ -25,13 +38,34 @@ public class Product implements Serializable {
       return id;
    }
 
+   public float getPrice() {
+      return price;
+   }
+
    public int getSupplierCount() {
       return supplierIds.size();
    }
 
+   public Iterator<WaitlistItem> getWaitlistedOrders() {
+      return waitlistedOrders.iterator();
+   }
 
-   public Iterator getSupplierIds() {
+   public boolean hasWaitlistedItems() {
+      return waitlistedOrders.size() != 0;
+   }
+
+   public Iterator<String> getSupplierIds() {
       return supplierIds.iterator();
+   }
+
+   public boolean hasSupplier(String supplierId) {
+      for (Iterator<String> sids = supplierIds.iterator(); sids.hasNext();) {
+         String sid = sids.next();
+         if (sid.equals(supplierId)) {
+            return true;
+         }
+      }
+      return false;
    }
 
    public boolean addSupplier(String supplierId) {
@@ -42,7 +76,22 @@ public class Product implements Serializable {
       return supplierIds.remove(supplierId);
    }
 
+   public void addToWaitlist(WaitlistItem item) {
+      waitlistedOrders.add(item);
+   }
+
+   public void removeFromWaitlist(WaitlistItem item) {
+      waitlistedOrders.remove(item);
+   }
+
+   public Iterator<WaitlistItem> getWaitlist(){
+      return waitlistedOrders.iterator();
+   }
+
    public String toString() {
-      return "Product id:" + id + " name:" + name + " suppliers:" + supplierIds;
+      return String.format(
+         "[%s] is a product with name: [%s], price per item: [$%.2f], and quantity: [%s]", 
+         id, name, price, quantity
+      );
    }
 }

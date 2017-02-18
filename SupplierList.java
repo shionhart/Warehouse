@@ -21,18 +21,21 @@ public class SupplierList implements Serializable {
       }
    }
 
+   public boolean isEmpty() {
+      return suppliers.size() == 0;
+   }
+
    public boolean insertSupplier(Supplier supplier) {
       return suppliers.add(supplier);
    }
 
-   public Iterator getSuppliers(){
+   public Iterator<Supplier> getSuppliers(){
       return suppliers.iterator();
    }
 
    public Supplier find(String supplierId) {
-      Iterator allSuppliers = suppliers.iterator();
-      while(allSuppliers.hasNext()) {
-         Supplier supplier = (Supplier) allSuppliers.next();
+      for (Iterator<Supplier> allSuppliers = suppliers.iterator(); allSuppliers.hasNext();) {
+         Supplier supplier = allSuppliers.next();
          if (supplier.getId().equals(supplierId)) {
             return supplier;
          }

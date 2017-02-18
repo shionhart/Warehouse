@@ -17,25 +17,27 @@ public class Inventory implements Serializable {
          return inventory;
       }
    }
+
+   public boolean isEmpty() {
+      return products.size() == 0;
+   }
   
    public boolean insertProduct(Product product) {
       products.add(product);
       return true;
    }
 
-   public Iterator getProducts() {
+   public Iterator<Product> getProducts() {
       return products.iterator();
    }
 
    public Product find(String productId) {
-      Iterator allProducts = products.iterator();
-      while(allProducts.hasNext()) {
-         Product product = (Product) allProducts.next();
+      for (Iterator<Product> allProducts = products.iterator(); allProducts.hasNext();) {
+         Product product = allProducts.next();
          if (product.getId().equals(productId)) {
             return product;
          }
       }
-
       return null;
    }
   

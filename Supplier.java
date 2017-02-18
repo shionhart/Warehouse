@@ -39,6 +39,16 @@ public class Supplier implements Serializable {
       return productIds.iterator();
    }
 
+   public boolean suppliesProduct(String productId) {
+      for (Iterator<String> pids = productIds.iterator(); pids.hasNext();) {
+         String pid = pids.next();
+         if (pid.equals(productId)) {
+            return true;
+         }
+      }
+      return false;
+   }
+
    public boolean addProduct(String productId) {
       return productIds.add(productId);
    }
@@ -48,6 +58,6 @@ public class Supplier implements Serializable {
    }
   
    public String toString() {
-      return "Supplier id:" + id + " name:" + name + " products:" + productIds;
-  }
+      return String.format("[%s] is a supplier with name: [%s]", id, name);
+   }
 }
