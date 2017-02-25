@@ -3,18 +3,22 @@ import java.io.*;
 
 public class Record implements Serializable {
    private static final long serialVersionUID = 1L;
-   private String productId;
+
+   // private String productId;
+   private Product product;
    private int quantity;
    private float price;
 
-   public Record(String productId, int quantity, float price) {
-      this.productId = productId;
+   // possibly maintain if record is filled or not
+
+   public Record(Product product, int quantity, float price) {
+      this.product = product;
       this.quantity = quantity;
       this.price = price;
    }
 
-   public String getProductId() {
-      return productId;
+   public Product getProduct() {
+      return product;
    }
 
    public float getPrice() {
@@ -27,8 +31,8 @@ public class Record implements Serializable {
 
    public String toString() {
       return String.format(
-         "product id: [%s], quantity: [%s], and price per item [$%.2f]",
-         productId, quantity, price
+         "product: [%s], quantity: [%s], and price per item [$%.2f]",
+         product, quantity, price
       );
    }
 }

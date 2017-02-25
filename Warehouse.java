@@ -20,7 +20,6 @@ public class Warehouse implements Serializable {
    public static final int INVOICE_NOT_FOUND  = 6;
    public static final int ALREADY_EXISTS     = 7;
 
-
    // Warehouse constructor
    private Warehouse() {
       inventory = Inventory.instance();
@@ -40,53 +39,171 @@ public class Warehouse implements Serializable {
          InvoiceIdServer.instance(); 
 
          return (warehouse = new Warehouse());
-      } else {
+      } 
+      else {
          return warehouse;
       }
    }
 
+   // Has methods
    public boolean hasClients() { return !clientList.isEmpty(); }
    public boolean hasProducts() { return !inventory.isEmpty(); }
    public boolean hasSuppliers() { return !supplierList.isEmpty(); }
+   public boolean hasClientsWithUnpaidBalance() { return clientList.hasUnpaid(); }
 
    public boolean clientHasOrders(String clientId) {
       Client client = clientList.find(clientId);
+      if (client == null) {
+         return false;
+      }
       return client.hasOrders();
+   }
+
+   public boolean clientHasWaitlistedOrders(String clientId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return false;
+      }
+      return client.hasWaitlistedOrders();
    }
 
    public boolean clientHasInvoices(String clientId) {
       Client client = clientList.find(clientId);
+      if (client == null) {
+         return false;
+      }
       return client.hasInvoices();
    }
 
    public boolean clientHasTransactions(String clientId) {
       Client client = clientList.find(clientId);
+      if (client == null) {
+         return false;
+      }
       return client.hasTransactions();
    }
 
-   // Method to create a new client and add it to the client list
+   // Add methods
    public Client addClient(String name) {
-   
-      // Create a new client using the parameter given
       Client client = new Client(name);
-      
-      // Pass the new client object to the list
-      if (clientList.insertClient(client)) {
-         
-         // On success return the client object created and inserted
+
+      if (clientList.insertClient(client)) {         
          return client;
       }
-
-      // On failure return null
       return null;
    }
 
-   public Iterator<Client> getClients() {
-      return clientList.getClients();
+
+   // Iterator methods
+   public Iterator<Client> getClients() { 
+      return clientList.getClients(); 
    }
+   
+   public Iterator<Client> getClientsWithUnpaidBalance() { 
+      return clientList.getUnpaid(); 
+   }
+
+   public Iterator<Supplier> getSuppliers() {
+      return supplierList.getSuppliers();
+   }
+
+   public Iterator<Product> getProducts() {
+      return inventory.getProducts();
+   }
+
+   public Iterator<Record> getOrderRecords(String clientId, String orderId) {
+      Client client = clientList.find(clientId);
+      Order order = client.findOrder(orderId);
+      return order.getRecords();
+   }
+
+   public Iterator<Record> getInvoiceRecords(String clientId, String invoiceId) {
+      Client client = clientList.find(clientId);
+      Invoice invoice = client.findInvoice(invoiceId);
+      return invoice.getRecords();
+   }
+
+   public Iterator<Order> getOrders(String clientId) {
+      Client client = clientList.find(clientId);
+      return client.getOrders();
+   }
+
+   public Iterator<Invoice> getInvoices(String clientId) {
+      Client client = clientList.find(clientId);
+      return client.getInvoices();
+   }
+
+   public Iterator<WaitlistItem> getProductWaitlistedOrderItems(String productId) {
+      Product product = inventory.find(productId);
+      if (product == null) {
+         return null;
+      }
+      return product.getWaitlistedOrders();
+   }
+
+   public Iterator<Transaction> getClientTransactions(String clientId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      return client.getTransactions();
+   }
+
+   public Iterator<Order> getClientWaitlistedOrders(String clientId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      return client.getWaitlistedOrders();
+   }
+
+   public Iterator<WaitlistItem> getClientWaitlistedOrderItems(String clientId, String orderId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      Order order = client.findOrder(orderId);
+      if (order == null) {
+         return null;
+      }
+      return order.getWaitlistedItems();
+   }
+
+   // Find methods
+   public Client findClient(String clientId) {
+      return clientList.find(clientId);
+   }
+
+   public Order findClientOrder(String clientId, String orderId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      return client.findOrder(orderId);
+   }
+
+   public Invoice findClientInvoice(String clientId, String invoiceId) {
+      Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      return client.findInvoice(invoiceId);
+   }
+
+   public Supplier findSupplier(String supplierId) {
+      return supplierList.find(supplierId);
+   }
+
+   public Product findProduct(String productId) {
+      return inventory.find(productId);
+   }
+
 
    public String getClientBalanceStr(String clientId) {
       Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
       return client.getFormattedBalance();
    }
 
@@ -105,27 +222,9 @@ public class Warehouse implements Serializable {
       return SUCCESS;
    }
 
-   public Client findClient(String clientId) {
-      return clientList.find(clientId);
-   }
+   
 
-   public Order findClientOrder(String clientId, String orderId) {
-      Client client = clientList.find(clientId);
-      return client.findOrder(orderId);
-   }
-
-   public Invoice findClientInvoice(String clientId, String invoiceId) {
-      Client client = clientList.find(clientId);
-      return client.findInvoice(invoiceId);
-   }
-
-   public boolean hasClientsWithUnpaidBalance() {
-      return clientList.hasUnpaid();
-   }
-
-   public Iterator<Client> getClientsWithUnpaidBalance() {
-      return clientList.getUnpaid();
-   }
+   
 
    public Supplier addSupplier(String name) {
    
@@ -141,20 +240,6 @@ public class Warehouse implements Serializable {
 
       // On failure return null
       return null;
-   }
-
-   public Iterator<Supplier> getSuppliers() {
-      return supplierList.getSuppliers();
-   }
-
-   // Looks in the supplier list for a supplier with a matching supplierId
-   // If one is found, return the supplier or null if it isn't found
-   public Supplier findSupplier(String supplierId) {
-      return supplierList.find(supplierId);
-   }
-
-   public Product findProduct(String productId) {
-      return inventory.find(productId);
    }
 
    public int associateProductAndSupplier(String productId, String supplierId) {
@@ -215,13 +300,15 @@ public class Warehouse implements Serializable {
       return null;
    }
 
-   public Iterator<Product> getProducts() {
-      return inventory.getProducts();
-   }
+   
 
+   // change to int?
    public String createOrder(String clientId) {
-      Order order = new Order(clientId);
       Client client = clientList.find(clientId);
+      if (client == null) {
+         return null;
+      }
+      Order order = new Order(client);
       client.addOrder(order);
       return order.getId();
    }
@@ -242,34 +329,14 @@ public class Warehouse implements Serializable {
          return PRODUCT_NOT_FOUND;
       }
 
-      Record record = new Record(productId, quantity, product.getPrice());
+      Record record = new Record(product, quantity, product.getPrice());
       order.addRecord(record);
       return SUCCESS;
    }
 
-   public Iterator<Record> getOrderRecords(String clientId, String orderId) {
-      Client client = clientList.find(clientId);
-      Order order = client.findOrder(orderId);
-      return order.getRecords();
-   }
+   
 
-   public Iterator<Record> getInvoiceRecords(String clientId, String invoiceId) {
-      Client client = clientList.find(clientId);
-      Invoice invoice = client.findInvoice(invoiceId);
-      return invoice.getRecords();
-   }
-
-   public Iterator<Order> getOrders(String clientId) {
-      Client client = clientList.find(clientId);
-      return client.getOrders();
-   }
-
-   public Iterator<Invoice> getInvoices(String clientId) {
-      Client client = clientList.find(clientId);
-      return client.getInvoices();
-   }
-
-   public int processOrder(String clientId, String orderId) {
+   public int processClientOrder(String clientId, String orderId) {
       Client client = clientList.find(clientId);
       if (client == null) {
          return CLIENT_NOT_FOUND;
@@ -280,55 +347,53 @@ public class Warehouse implements Serializable {
          return ORDER_NOT_FOUND;
       }
 
-      Invoice invoice = new Invoice(clientId);
-
-      for (Iterator<Record> records = order.getRecords(); records.hasNext();) {
-         Record record = records.next();
-         String productId = record.getProductId();
-         int orderQuantity = record.getQuantity();
-         Product product = inventory.find(productId);
-         int productQuantity = product.getQuantity();
-
-         if (productQuantity < orderQuantity) {
-            int difference = orderQuantity - productQuantity;
-            WaitlistItem item = new WaitlistItem(clientId, orderId, difference);
-            product.addToWaitlist(item);
-
-            if (productQuantity != 0) {
-               Record invoiceRecord = new Record(productId, productQuantity, product.getPrice());
-               invoice.addRecord(invoiceRecord);
-               product.setQuantity(0);
-            }
-         }
-         else {
-            int difference = productQuantity - orderQuantity;
-            Record invoiceRecord = new Record(productId, orderQuantity, product.getPrice());
-            invoice.addRecord(invoiceRecord);
-            product.setQuantity(difference);
-         }
-      }
-
-      if (!invoice.isEmpty()) {
-         float total = invoice.calculateCost();
-         client.addInvoice(invoice);
-         client.charge(total);
-      }
+      client.processOrder(order);
       return SUCCESS;
    }
+    
 
    public boolean productHasWaitlistedOrderItems(String productId) {
       Product product = inventory.find(productId);
-      return product.hasWaitlistedItems();
+      if (product == null) {
+         return false;
+      }
+
+      return product.hasWaitlistedOrders();
    }
 
-   public Iterator<WaitlistItem> getProductWaitlistedOrderItems(String productId) {
+   public int acceptProductShipment(String productId, int quantity) {
       Product product = inventory.find(productId);
-      return product.getWaitlistedOrders();
+      if (product == null) {
+         return PRODUCT_NOT_FOUND;
+      }
+      else if (quantity <= 0) {
+         return OPERATION_FAILED;
+      }
+
+      // set amount remaining amount to the quantity given
+      int quantityRemaining = quantity;
+
+      // continue until there aren't waitlisted orders or the shipment quantity is empty
+      while (product.hasWaitlistedOrders() && (quantityRemaining > 0)) {
+         WaitlistItem item = product.getNextWaitlistedOrder();
+         Client client = item.getOrder().getClient();
+         quantityRemaining = client.processWaitlistedOrderItem(item.getOrder(), item, quantityRemaining);
+
+         if (quantityRemaining > 0) {
+            product.popWaitlistedOrder();
+         }
+      }
+
+      // all waitlisted orders have been processed, increase product quantity with remaining value
+      if (quantityRemaining > 0) {
+         product.increaseQuantity(quantityRemaining);
+      }
+
+      return SUCCESS;
    }
 
-   public Iterator<Transaction> getClientTransactions(String clientId) {
-      Client client = clientList.find(clientId);
-      return client.getTransactions();
+   public void fufillProductWaitlistedOrders(String productId) {
+
    }
 
    // Method for retrieving the serialized object
@@ -394,147 +459,5 @@ public class Warehouse implements Serializable {
       } catch(Exception e) {
          e.printStackTrace();
       }
-   }
-
-  
-   public String toString() {
-
-      // add what information we want to print in our toString Method
-      return "UNIMPLEMENTED toString FOR WAREHOUSE";
-   }
-
-   public static void main(String[] s) {
-      System.out.println("Welcome to the Warehouse class.");
-      System.out.println("------ Warehouse Main is purely for testing purposes -----");
-
-      // Warehouse w = Warehouse.instance();
-
-      // Test case start: Add client(s) to the system and print the client 
-      // (manually verify it is there)
-      // Note: duplicate data is currently allowed
-      // Expected output:
-      //
-      // ------------------------
-      //  Clients in the system:
-      //     Client name Steel
-      //     Client name Erik
-      //     Client name Erik
-      //     Client name Garrett
-      // ------------------------
-      // w.addClient("Steel");
-      // w.addClient("Erik");
-      // w.addClient("Erik");
-      // w.addClient("Garrett");
-      // Iterator allOfTheClients = w.getClients();
-      // System.out.println("Clients in the system:");
-      // while(allOfTheClients.hasNext()) {
-      //    System.out.println("\t" + allOfTheClients.next());
-      // }
-      // Test case end
-
-      // Test case start: Add supplier(s) to the system and print the supplier 
-      // (manually verify it is there)
-      // Note: duplicate data is currently allowed
-      // Expected output:
-      //
-      // ------------------------
-      //  Suppliers in the system:
-      //     Supplier id:S5 name:Walmart Manufacturing
-      //     Supplier id:S6 name:Monster
-      //     Supplier id:S7 name:Blue Microphones
-      //     Supplier id:S8 name:Aquafina
-      // ------------------------
-      // w.addSupplier("Walmart Manufacturing");
-      // w.addSupplier("Monster");
-      // w.addSupplier("Blue Microphones");
-      // w.addSupplier("Aquafina");
-      // Iterator allOfTheSuppliers = w.getSuppliers();
-      // System.out.println("Suppliers in the system:");
-      // while(allOfTheSuppliers.hasNext()) {
-      //    System.out.println("\t" + allOfTheSuppliers.next());
-      // }
-      // Test case end
-
-      // Test case start: Add product(s) to the inventory in the system and print the 
-      // product (manually verify it is there)
-      // Note: duplicate data is currently allowed
-      // Expected output:
-      //
-      // ------------------------
-      //  Products in the system:
-      //     Product id:P9 name:Walmart Coffee Mug
-      //     Product id:P10 name:Energy Drink
-      //     Product id:P11 name:Microphone
-      //     Product id:P12 name:Water
-      // ------------------------
-      // w.addProduct("Walmart Coffee Mug");
-      // w.addProduct("Energy Drink");
-      // w.addProduct("Microphone");
-      // w.addProduct("Water");
-      // Iterator allOfTheProducts = w.getProducts();
-      // System.out.println("Products in the system:");
-      // while(allOfTheProducts.hasNext()) {
-      //    System.out.println("\t" + allOfTheProducts.next());
-      // }
-      // Test case end
-
-      // Test case start: Create supplier, and then search for specific supplier by id, 
-      // and print the supplier found
-      // Expected output:
-      //
-      // ------------------------
-      //  Created supplier:Supplier id:S13 name:Oracle
-      //  Returned supplier:Supplier id:S13 name:Oracle
-      // ------------------------
-      // Supplier testSupplier = w.addSupplier("Oracle");
-      // System.out.println("Created supplier:" + testSupplier);
-
-      // Supplier returnedSupplier = w.findSupplier(testSupplier.getId());
-      // System.out.println("Returned supplier:" + returnedSupplier);
-      // Note: Real testcase validation can be added if we add an equals method to supplier 
-      // that checks the ids of the objects given
-      // Test case end
-
-      // Test case start: Assign product to supplier and supplier to product, and verify it worked
-      // Expected output:
-      //
-      // ------------------------
-      // ------------------------
-      // Supplier s1 = w.addSupplier("SunSystems");
-      // Product p1 = w.addProduct("Thin Client Computer");
-
-      // // Check product's supplier count initially
-      // System.out.println("Product:" + p1.getName() + " has:" + p1.getSupplierCount() + " suppliers initially");
-      
-      // // Check supplier's product count initially
-      // System.out.println("Supplier:" + s1.getName() + " has:" + s1.getProductCount() + " products initially");
-
-      // w.associateProductAndSupplier(p1.getId(), s1.getId());
-
-      // // Check product's supplier count after addition
-      // System.out.println("Product:" + p1.getName() + " has:" + p1.getSupplierCount() + " suppliers after addition");
-      
-      // // Check supplier's product count after addition
-      // System.out.println("Supplier:" + s1.getName() + " has:" + s1.getProductCount() + " products after addition");
-
-      // // Print the product's supplier list
-      // System.out.println("Listing suppliers for product:" + p1.getName() + ":");
-      // Iterator p1sSuppliers = p1.getSupplierIds();
-      // while(p1sSuppliers.hasNext()) {
-      //    String p1sSupplierId = (String) p1sSuppliers.next();
-      //    Supplier p1Supplier = w.findSupplier(p1sSupplierId);
-      //    System.out.println("\t" + p1Supplier);
-      // }
-
-      // // Print the supplier's product list
-      // System.out.println("Listing products for supplier:" + s1.getName() + ":");
-      // Iterator s1sProducts = s1.getProductIds();
-      // while(s1sProducts.hasNext()) {
-      //    String s1sProductId = (String) s1sProducts.next();
-      //    Product s1Product = w.findProduct(s1sProductId);
-      //    System.out.println("\t" + s1Product);
-      // }
-      // Test case end
-
    }
 }

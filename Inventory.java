@@ -4,12 +4,10 @@ import java.io.*;
 
 public class Inventory implements Serializable {
    private static final long serialVersionUID = 1L;
-
-   private List<Product> products = new LinkedList<Product>();
-  
    private static Inventory inventory;
+   private List<Product> products = new LinkedList<Product>();
    private Inventory() {}
- 
+
    public static Inventory instance() {
       if (inventory == null) {
          return (inventory = new Inventory());
@@ -41,6 +39,10 @@ public class Inventory implements Serializable {
       return null;
    }
   
+   public String toString() {
+      return products.toString();
+   }
+
    private void writeObject(java.io.ObjectOutputStream output) {
       try {
          output.defaultWriteObject();
@@ -67,9 +69,5 @@ public class Inventory implements Serializable {
       } catch(ClassNotFoundException cnfe) {
          cnfe.printStackTrace();
       }
-   }
-  
-   public String toString() {
-      return products.toString();
    }
 }

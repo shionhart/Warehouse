@@ -6,6 +6,7 @@ public class Product implements Serializable {
    private static final long serialVersionUID = 1L;
    private static final String PRODUCT_STRING = "P";
    private String name;
+   
    private String id;
    private int quantity;
    private float price;
@@ -30,6 +31,10 @@ public class Product implements Serializable {
       quantity = amount;
    }
 
+   public void increaseQuantity(int amount) {
+      quantity += amount;
+   }
+
    public String getName() {
       return name;
    }
@@ -46,11 +51,7 @@ public class Product implements Serializable {
       return supplierIds.size();
    }
 
-   public Iterator<WaitlistItem> getWaitlistedOrders() {
-      return waitlistedOrders.iterator();
-   }
-
-   public boolean hasWaitlistedItems() {
+   public boolean hasWaitlistedOrders() {
       return waitlistedOrders.size() != 0;
    }
 
@@ -80,11 +81,15 @@ public class Product implements Serializable {
       waitlistedOrders.add(item);
    }
 
-   public void removeFromWaitlist(WaitlistItem item) {
-      waitlistedOrders.remove(item);
+   public WaitlistItem getNextWaitlistedOrder() {
+      return waitlistedOrders.peek();
    }
 
-   public Iterator<WaitlistItem> getWaitlist(){
+   public void popWaitlistedOrder() {
+      waitlistedOrders.remove();
+   }
+
+   public Iterator<WaitlistItem> getWaitlistedOrders(){
       return waitlistedOrders.iterator();
    }
 

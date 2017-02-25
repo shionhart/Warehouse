@@ -5,15 +5,21 @@ public class Invoice implements Serializable {
    private static final long serialVersionUID = 1L;
    private static final String INVOICE_STRING = "I";
    private String id;
-   private List<Record> items;   
+   private List<Record> items; 
+   private Client client;  
    
-   public Invoice(String clientId) {
+   public Invoice(Client client) {
       this.id = INVOICE_STRING + (InvoiceIdServer.instance()).getId();
       this.items = new LinkedList<Record>();
+      this.client = client;
    }
 
    public String getId() {
       return id;
+   }
+
+   public Client getClient() {
+      return client;
    }
 
    public void addRecord(Record record) {
@@ -38,6 +44,6 @@ public class Invoice implements Serializable {
    }
 
    public String toString() {
-      return String.format("[%s] is an invoice for [%d] items", id, items.size());
+      return String.format("[%s] is an invoice for [%d] item(s)", id, items.size());
    }
 }

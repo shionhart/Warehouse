@@ -3,17 +3,11 @@ import java.io.*;
 
 public class ClientList implements Serializable {
    private static final long serialVersionUID = 1L;
-
-   // The "List" is used to maintain the actual client list
+   private static ClientList clientList;
    private List<Client> clients = new LinkedList<Client>();
    private List<Client> clientsWithBalance = new LinkedList<Client>();
-
-   // This variable is used for the singleton "ClientList" instance
-   private static ClientList clientList;
-
    private ClientList() {}
 
-   // Used to create the singleton instance
    public static ClientList instance() {
       if (clientList == null) {
          return (clientList = new ClientList());
@@ -45,8 +39,8 @@ public class ClientList implements Serializable {
    }
 
    // terrible design, because it is extremely inefficient
+   // compile unpaid list and return the iterator for it
    public Iterator<Client> getUnpaid() {
-      // compile unpaid list and return the iterator for it
 
       for (Iterator<Client> allClients = clients.iterator(); allClients.hasNext();) {
          Client client = allClients.next();
@@ -65,6 +59,10 @@ public class ClientList implements Serializable {
          }
       }
       return null;
+   }
+
+   public String toString() {
+      return clients.toString();
    }
   
    private void writeObject(java.io.ObjectOutputStream output) {
@@ -93,13 +91,5 @@ public class ClientList implements Serializable {
       } catch(ClassNotFoundException cnfe) {
          cnfe.printStackTrace();
       }
-   }
-
-   public String toString() {
-      return clients.toString();
-   }
-
-   public static void main(String[] s) {
-      System.out.println("Welcome to the ClientList class.");
    }
 }

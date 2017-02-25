@@ -3,16 +3,10 @@ import java.io.*;
 
 public class SupplierList implements Serializable {
    private static final long serialVersionUID = 1L;
-
-   // The "List" is used to maintain the actual supplier list
-   private List<Supplier> suppliers = new LinkedList<Supplier>();
-
-   // This variable is used for the singleton "SupplierList" instance
    private static SupplierList supplierList;
-
+   private List<Supplier> suppliers = new LinkedList<Supplier>();
    private SupplierList() {}
 
-   // Used to create the singleton instance
    public static SupplierList instance() {
       if (supplierList == null) {
          return (supplierList = new SupplierList());
@@ -25,12 +19,12 @@ public class SupplierList implements Serializable {
       return suppliers.size() == 0;
    }
 
-   public boolean insertSupplier(Supplier supplier) {
-      return suppliers.add(supplier);
-   }
-
    public Iterator<Supplier> getSuppliers(){
       return suppliers.iterator();
+   }
+
+   public boolean insertSupplier(Supplier supplier) {
+      return suppliers.add(supplier);
    }
 
    public Supplier find(String supplierId) {
@@ -41,6 +35,10 @@ public class SupplierList implements Serializable {
          }
       }
       return null;
+   }
+
+   public String toString() {
+      return suppliers.toString();
    }
   
    private void writeObject(java.io.ObjectOutputStream output) {
@@ -69,13 +67,5 @@ public class SupplierList implements Serializable {
       } catch(ClassNotFoundException cnfe) {
          cnfe.printStackTrace();
       }
-   }
-
-   public String toString() {
-      return suppliers.toString();
-   }
-
-   public static void main(String[] s) {
-      System.out.println("Welcome to the SupplierList class.");
-   }
+   } 
 }

@@ -22,14 +22,16 @@ public class Ui {
    private static final int LIST_CLIENT_ORDER_DETAILS         = 11;
    private static final int LIST_CLIENT_INVOICE_DETAILS       = 12;
    private static final int LIST_CLIENTS_WITH_UNPAID_BALANCE  = 13;
-   private static final int LIST_WAITLISTED_PRODUCT_ORDERS    = 14;
-   private static final int ASSOCIATE_PRODUCT_AND_SUPPLIER    = 15;
-   private static final int DISASSOCIATE_PRODUCT_AND_SUPPLIER = 16;
-   private static final int CREATE_CLIENT_ORDER               = 17;
-   private static final int ACCEPT_CLIENT_PAYMENT             = 18;
-   private static final int SAVE                              = 19;
-   private static final int RETRIEVE                          = 20;
-   private static final int HELP                              = 21;
+   private static final int LIST_CLIENT_WAITLISTED_ORDERS     = 14;
+   private static final int LIST_WAITLISTED_PRODUCT_ORDERS    = 15;
+   private static final int ASSOCIATE_PRODUCT_AND_SUPPLIER    = 16;
+   private static final int DISASSOCIATE_PRODUCT_AND_SUPPLIER = 17;
+   private static final int CREATE_CLIENT_ORDER               = 18;
+   private static final int ACCEPT_CLIENT_PAYMENT             = 19;
+   private static final int ACCEPT_PRODUCT_SHIPMENT           = 20;
+   private static final int SAVE                              = 21;
+   private static final int RETRIEVE                          = 22;
+   private static final int HELP                              = 23;
 
    private Ui() {
       if (yesOrNo("Look for saved data and use it?")) {
@@ -100,14 +102,48 @@ public class Ui {
       System.out.println(LIST_CLIENT_ORDER_DETAILS         + " to list the details of a client's order");
       System.out.println(LIST_CLIENT_INVOICE_DETAILS       + " to list the details of a client's invoice");
       System.out.println(LIST_CLIENTS_WITH_UNPAID_BALANCE  + " to list clients with an unpaid balance");
+      System.out.println(LIST_CLIENT_WAITLISTED_ORDERS     + " to list client's waitlisted orders");
       System.out.println(LIST_WAITLISTED_PRODUCT_ORDERS    + " to list a product's waitlisted orders");
       System.out.println(ASSOCIATE_PRODUCT_AND_SUPPLIER    + " to associate a product and supplier");
       System.out.println(DISASSOCIATE_PRODUCT_AND_SUPPLIER + " to disassociate a product and supplier");
       System.out.println(CREATE_CLIENT_ORDER               + " to create a client order");
       System.out.println(ACCEPT_CLIENT_PAYMENT             + " to accept a client's payment");
+      System.out.println(ACCEPT_PRODUCT_SHIPMENT           + " to accept a product shipment");
       System.out.println(SAVE                              + " to save data");
       System.out.println(RETRIEVE                          + " to retrieve");
       System.out.println(HELP                              + " for help");
+   }
+
+   public void process() {
+      int command;
+      help();
+      while ((command = getCommand()) != EXIT) {
+         switch (command) {
+            case HELP:                              help();                           break;
+            case SAVE:                              save();                           break;
+            case RETRIEVE:                          retrieve();                       break;
+            case ADD_CLIENT:                        addClient();                      break;
+            case ADD_SUPPLIER:                      addSupplier();                    break;
+            case ADD_PRODUCT:                       addProduct();                     break;
+            case SHOW_CLIENTS:                      showClients();                    break;
+            case SHOW_SUPPLIERS:                    showSuppliers();                  break;
+            case SHOW_PRODUCTS:                     showProducts();                   break;
+            case LIST_CLIENT_TRANSACTION_HISTORY:   getClientTransactionHistory();    break;
+            case LIST_CLIENT_ORDER_DETAILS:         getClientOrderDetails();          break;
+            case LIST_CLIENT_INVOICE_DETAILS:       getClientInvoiceDetails();        break;
+            case LIST_CLIENTS_WITH_UNPAID_BALANCE:  getClientsWithUnpaidBalance();    break;
+            case LIST_CLIENT_WAITLISTED_ORDERS:     getClientsWaitlistedOrders();     break;
+            case ASSOCIATE_PRODUCT_AND_SUPPLIER:    associateProductAndSupplier();    break;
+            case DISASSOCIATE_PRODUCT_AND_SUPPLIER: disassociateProductAndSupplier(); break;
+            case LIST_CLIENT_BALANCE:               getClientBalance();               break;
+            case LIST_CLIENT_ORDERS:                getClientOrders();                break;
+            case LIST_CLIENT_INVOICES:              getClientInvoices();              break;
+            case LIST_WAITLISTED_PRODUCT_ORDERS:    getWaitlistedProductOrders();     break;
+            case CREATE_CLIENT_ORDER:               createOrder();                    break;
+            case ACCEPT_CLIENT_PAYMENT:             acceptClientPayment();            break;
+            case ACCEPT_PRODUCT_SHIPMENT:           acceptProductShipment();          break;
+         }
+      }
    }
 
    public void addClient() {
@@ -165,7 +201,9 @@ public class Ui {
 
    public void showProducts() {
       if (warehouse.hasProducts()) {
+         
          System.out.println("System has product(s):");
+         
          for (Iterator<Product> products = warehouse.getProducts(); products.hasNext();) {
             Product product = products.next();
             System.out.println("\t" + product);
@@ -183,20 +221,28 @@ public class Ui {
       Product product;
 
       do {
-         supplierId = getToken("Enter supplier id");
+         supplierId = getToken("Enter supplier id, or 'stop' to cancel action");
          supplier = warehouse.findSupplier(supplierId);
 
-         if (supplier == null) {
-            System.out.println("Invalid supplier id, please try again.");
+         if (supplierId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
+         }
+         else if (supplier == null) {
+            System.out.println("Invalid supplier id, please try again or type 'stop' to cancel action.");
          }
       } while (supplier == null); 
 
       do {
-         productId = getToken("Enter product id");
+         productId = getToken("Enter product id, or 'stop' to cancel action");
          product = warehouse.findProduct(productId);
 
-         if (product == null) {
-            System.out.println("Invalid product id, please try again.");
+         if (productId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
+         }
+         else if (product == null) {
+            System.out.println("Invalid product id, please try again or type 'stop' to cancel action.");
          }
       } while (product == null); 
 
@@ -226,22 +272,30 @@ public class Ui {
       Product product;
 
       do {
-         supplierId = getToken("Enter supplier id");
+         supplierId = getToken("Enter supplier id, or 'stop' to cancel action");
          supplier = warehouse.findSupplier(supplierId);
 
-         if (supplier == null) {
-            System.out.println("Invalid supplier id, please try again.");
+         if (supplierId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
+         }
+         else if (supplier == null) {
+            System.out.println("Invalid supplier id, please try again or type 'stop' to cancel action.");
          }
       } while (supplier == null); 
 
       do {
-         productId = getToken("Enter product id");
+         productId = getToken("Enter product id, or 'stop' to cancel action");
          product = warehouse.findProduct(productId);
 
-         if (product == null) {
-            System.out.println("Invalid product id, please try again.");
+         if (productId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (product == null);       
+         else if (product == null) {
+            System.out.println("Invalid product id, please try again or type 'stop' to cancel action.");
+         }
+      } while (product == null); 
 
       int retval = warehouse.disassociateProductAndSupplier(productId, supplierId);
       switch(retval){
@@ -267,13 +321,17 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
       String clientBalance = warehouse.getClientBalanceStr(clientId);
       System.out.println(String.format("[%s] has balance [%s]", clientId, clientBalance));
@@ -284,15 +342,20 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
-      if (warehouse.clientHasInvoices(clientId)) {
+      // if (warehouse.clientHasInvoices(clientId)) {
+      if (client.hasInvoices()) {
          System.out.println("Client id: " + clientId + " has invoice(s)");
          for (Iterator<Invoice> invoices = warehouse.getInvoices(clientId); invoices.hasNext();) {
             Invoice invoice = invoices.next();
@@ -309,15 +372,24 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
-      if (warehouse.clientHasOrders(clientId)) {
+      // we need to make note why we made this change:
+      // it is because by requiring that the user has the client object to findout is they have orders
+      // that assumes they have a valid client so no additional checking is needed through the warehouse
+
+      // if (warehouse.clientHasOrders(clientId)) {
+      if (client.hasOrders()) {   
          System.out.println("Client id: " + clientId + " has order(s)");
          for (Iterator<Order> orders = warehouse.getOrders(clientId); orders.hasNext();) {
             Order order = orders.next();
@@ -334,22 +406,29 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
       String orderId = warehouse.createOrder(clientId);
 
       do {
          int quantity;
-         String productId = getToken("Enter product id");
+         String productId = getToken("Enter product id, or 'stop' to cancel action");
          Product product = warehouse.findProduct(productId);
 
-         if (product == null) {
+         if (productId.equals("stop")) {
+
+         }
+         else if (product == null) {
             System.out.println("Invalid product id, please try again.");
             continue;
          }
@@ -385,7 +464,7 @@ public class Ui {
          }
       } while (yesOrNo("Would you like to enter more product ids?")); 
 
-      int retval = warehouse.processOrder(clientId, orderId);
+      int retval = warehouse.processClientOrder(clientId, orderId);
       switch(retval){
          case Warehouse.CLIENT_NOT_FOUND:
             System.out.println("Unable to process order: client id " + clientId + " doesn't exist.");
@@ -407,13 +486,17 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
       String clientBalance = warehouse.getClientBalanceStr(clientId);
       float currentBalance = warehouse.getClientBalance(clientId);
@@ -459,13 +542,17 @@ public class Ui {
       Product product;
 
       do {
-         productId = getToken("Enter product id");
+         productId = getToken("Enter product id, or 'stop' to cancel action");
          product = warehouse.findProduct(productId);
 
-         if (product == null) {
-            System.out.println("Invalid product id, please try again.");
+         if (productId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (product == null); 
+         else if (product == null) {
+            System.out.println("Invalid product id, please try again or type 'stop' to cancel action.");
+         }
+      } while (product == null);  
 
       if (warehouse.productHasWaitlistedOrderItems(productId)) {
          System.out.println(String.format("Product id [%s] has waitlisted order(s):", productId));
@@ -485,15 +572,20 @@ public class Ui {
       Client client;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
-      if (warehouse.clientHasTransactions(clientId)) {
+      // if (warehouse.clientHasTransactions(clientId)) {
+      if (client.hasTransactions()) {
          System.out.println(String.format("Client [%s] has transaction(s):", clientId));
          Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
          while(transactions.hasNext()) {
@@ -513,13 +605,17 @@ public class Ui {
       Order order;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
       do {
          orderId = getToken("Enter order id");
@@ -549,13 +645,17 @@ public class Ui {
       Invoice invoice;
 
       do {
-         clientId = getToken("Enter client id");
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
          client = warehouse.findClient(clientId);
 
-         if (client == null) {
-            System.out.println("Invalid client id, please try again.");
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
-      } while (client == null); 
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
 
       do {
          invoiceId = getToken("Enter invoice id");
@@ -592,33 +692,84 @@ public class Ui {
       }
    }
 
-   public void process() {
-      int command;
-      help();
-      while ((command = getCommand()) != EXIT) {
-         switch (command) {
-            case HELP:                              help();                           break;
-            case SAVE:                              save();                           break;
-            case RETRIEVE:                          retrieve();                       break;
-            case ADD_CLIENT:                        addClient();                      break;
-            case ADD_SUPPLIER:                      addSupplier();                    break;
-            case ADD_PRODUCT:                       addProduct();                     break;
-            case SHOW_CLIENTS:                      showClients();                    break;
-            case SHOW_SUPPLIERS:                    showSuppliers();                  break;
-            case SHOW_PRODUCTS:                     showProducts();                   break;
-            case LIST_CLIENT_TRANSACTION_HISTORY:   getClientTransactionHistory();    break;
-            case LIST_CLIENT_ORDER_DETAILS:         getClientOrderDetails();          break;
-            case LIST_CLIENT_INVOICE_DETAILS:       getClientInvoiceDetails();        break;
-            case LIST_CLIENTS_WITH_UNPAID_BALANCE:  getClientsWithUnpaidBalance();    break;
-            case ASSOCIATE_PRODUCT_AND_SUPPLIER:    associateProductAndSupplier();    break;
-            case DISASSOCIATE_PRODUCT_AND_SUPPLIER: disassociateProductAndSupplier(); break;
-            case LIST_CLIENT_BALANCE:               getClientBalance();               break;
-            case LIST_CLIENT_ORDERS:                getClientOrders();                break;
-            case LIST_CLIENT_INVOICES:              getClientInvoices();              break;
-            case LIST_WAITLISTED_PRODUCT_ORDERS:    getWaitlistedProductOrders();     break;
-            case CREATE_CLIENT_ORDER:               createOrder();                    break;
-            case ACCEPT_CLIENT_PAYMENT:             acceptClientPayment();            break;
+   public void getClientsWaitlistedOrders() {
+      String clientId;
+      Client client;
+
+      do {
+         clientId = getToken("Enter client id, or 'stop' to cancel action");
+         client = warehouse.findClient(clientId);
+
+         if (clientId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
          }
+         else if (client == null) {
+            System.out.println("Invalid client id, please try again or type 'stop' to cancel action.");
+         }
+      } while (client == null);
+
+      if (warehouse.clientHasWaitlistedOrders(clientId)) {
+
+         System.out.println("Client " + clientId + " has waitlisted order(s):");
+         for (Iterator<Order> orders = warehouse.getClientWaitlistedOrders(clientId); orders.hasNext();) {
+            Order order = orders.next();
+            
+            System.out.println("\tOrder " + order.getId() + " has waitlisted items:");
+            for (Iterator<WaitlistItem> items = warehouse.getClientWaitlistedOrderItems(clientId, order.getId()); items.hasNext();) {
+               WaitlistItem item = items.next();
+               System.out.println("\t\t" + item);
+            }
+         }
+      }
+      else {
+         System.out.println("Client id [" + clientId + "] doesn't have any waitlisted orders.");
+      }
+   }
+
+   public void acceptProductShipment() {
+      int quantity;
+      String  productId;
+      Product product;
+
+      do {
+         productId = getToken("Enter product id, or 'stop' to cancel action");
+         product = warehouse.findProduct(productId);
+
+         if (productId.equals("stop")) {
+            System.out.println("Action cancelled.");
+            return;
+         }
+         else if (product == null) {
+            System.out.println("Invalid product id, please try again or type 'stop' to cancel action.");
+         }
+      } while (product == null); 
+
+      do {
+         quantity = Integer.parseInt(getToken("Enter quantity, or '-1' to cancel action"));
+
+         if (quantity == -1) {
+            System.out.println("Action cancelled.");
+            return;
+         }
+         else if (quantity <= 0) {
+            System.out.println("Amount must be greater than 0, please try again or type 'stop' to cancel action.");
+         }
+      } while (quantity <= 0);
+
+      int retval = warehouse.acceptProductShipment(productId, quantity);
+      switch(retval){
+         case Warehouse.PRODUCT_NOT_FOUND:
+            System.out.println("Unable to accept product shipment: product id " + productId + " doesn't exist.");
+            break;
+         case Warehouse.OPERATION_FAILED:
+            System.out.println("Unable to accept product shipment: operating failed.");
+            break;
+         case Warehouse.SUCCESS:
+            System.out.println("Product shipment accepted.");
+            break;
+         default:
+            System.out.println("An error has occurred");
       }
    }
 
