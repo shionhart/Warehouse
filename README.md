@@ -1,6 +1,6 @@
 # Warehouse
-Warehouse system for CS430 - OO Design
-This project was built with the facade and iterator design patterns in mind
+Warehouse system for a project assigned in class (CS430 - OO Design).
+This project was built with the facade, singleton, and iterator design patterns in mind.
 
 # To compile
 [folder with project]>javac -Xlint ./*.java
