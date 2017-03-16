@@ -45,7 +45,6 @@ public class Warehouse implements Serializable {
       }
    }
 
-   // Has methods
    public boolean hasClients() { return !clientList.isEmpty(); }
    public boolean hasProducts() { return !inventory.isEmpty(); }
    public boolean hasSuppliers() { return !supplierList.isEmpty(); }
@@ -83,7 +82,6 @@ public class Warehouse implements Serializable {
       return client.hasTransactions();
    }
 
-   // Add methods
    public Client addClient(String name) {
       Client client = new Client(name);
 
@@ -93,8 +91,6 @@ public class Warehouse implements Serializable {
       return null;
    }
 
-
-   // Iterator methods
    public Iterator<Client> getClients() { 
       return clientList.getClients(); 
    }
@@ -169,7 +165,6 @@ public class Warehouse implements Serializable {
       return order.getWaitlistedItems();
    }
 
-   // Find methods
    public Client findClient(String clientId) {
       return clientList.find(clientId);
    }
@@ -221,10 +216,6 @@ public class Warehouse implements Serializable {
       client.acceptPayment(clientPayment);
       return SUCCESS;
    }
-
-   
-
-   
 
    public Supplier addSupplier(String name) {
    
@@ -300,9 +291,6 @@ public class Warehouse implements Serializable {
       return null;
    }
 
-   
-
-   // change to int?
    public String createOrder(String clientId) {
       Client client = clientList.find(clientId);
       if (client == null) {
@@ -334,8 +322,6 @@ public class Warehouse implements Serializable {
       return SUCCESS;
    }
 
-   
-
    public int processClientOrder(String clientId, String orderId) {
       Client client = clientList.find(clientId);
       if (client == null) {
@@ -361,41 +347,35 @@ public class Warehouse implements Serializable {
       return product.hasWaitlistedOrders();
    }
 
-   public int acceptProductShipment(String productId, int quantity) {
+   // returns -1 on failure
+   public int processShipment(String productId, int quantity, WaitlistItem item) {
       Product product = inventory.find(productId);
       if (product == null) {
-         return PRODUCT_NOT_FOUND;
-      }
-      else if (quantity <= 0) {
-         return OPERATION_FAILED;
+         return -1;
       }
 
-      // set amount remaining amount to the quantity given
-      int quantityRemaining = quantity;
+      if (!productHasWaitlistedOrderItems(productId)) {
+         
+         // fill update inventory quantity
+         product.increaseQuantity(quantity);
+         return quantity;
+      }
+      
+      if (item == null) {
 
-      // continue until there aren't waitlisted orders or the shipment quantity is empty
-      while (product.hasWaitlistedOrders() && (quantityRemaining > 0)) {
-         WaitlistItem item = product.getNextWaitlistedOrder();
-         Client client = item.getOrder().getClient();
-         quantityRemaining = client.processWaitlistedOrderItem(item.getOrder(), item, quantityRemaining);
-
-         if (quantityRemaining > 0) {
-            product.popWaitlistedOrder();
-         }
+         // fill first item in queue
+         item = product.getNextWaitlistedOrder();
       }
 
-      // all waitlisted orders have been processed, increase product quantity with remaining value
-      if (quantityRemaining > 0) {
-         product.increaseQuantity(quantityRemaining);
-      }
+      Client client = item.getOrder().getClient();
+      quantity = client.processWaitlistedOrderItem(item.getOrder(), item, quantity);
 
-      return SUCCESS;
+      if (quantity > 0) {
+         product.removeWaitlistItem(item);
+      }
+      return quantity;
    }
-
-   public void fufillProductWaitlistedOrders(String productId) {
-
-   }
-
+   
    // Method for retrieving the serialized object
    public static Warehouse retrieve() {
       try {

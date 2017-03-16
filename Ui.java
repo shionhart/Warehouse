@@ -753,23 +753,35 @@ public class Ui {
             return;
          }
          else if (quantity <= 0) {
-            System.out.println("Amount must be greater than 0, please try again or type 'stop' to cancel action.");
+            System.out.println("Amount must be greater than 0, please try again or type '-1' to cancel action.");
          }
       } while (quantity <= 0);
 
-      int retval = warehouse.acceptProductShipment(productId, quantity);
-      switch(retval){
-         case Warehouse.PRODUCT_NOT_FOUND:
-            System.out.println("Unable to accept product shipment: product id " + productId + " doesn't exist.");
-            break;
-         case Warehouse.OPERATION_FAILED:
-            System.out.println("Unable to accept product shipment: operating failed.");
-            break;
-         case Warehouse.SUCCESS:
-            System.out.println("Product shipment accepted.");
-            break;
-         default:
-            System.out.println("An error has occurred");
+      if (warehouse.productHasWaitlistedOrderItems(productId)) {
+         Iterator<WaitlistItem> waitlistedOrderItems = warehouse.getProductWaitlistedOrderItems(productId);
+         while(waitlistedOrderItems.hasNext() && quantity != 0) {
+            WaitlistItem item = waitlistedOrderItems.next();
+
+            if (!yesOrNo(String.format("Would you like to fill: [%s]", item))) {
+               continue;
+            }
+
+            int quantityRemaining = warehouse.processShipment(productId, quantity, item);
+            if (quantityRemaining == -1) {
+               System.out.println(String.format("An error occurred when filling [%s], skipping..", item));
+            }
+            else {
+               quantity = quantityRemaining;
+            }
+         }
+      }
+      else {
+         System.out.println("There are no waitlisted items for that product. Adding all to inventory.");
+      }
+
+      // update the quantity in the system 
+      while (quantity > 0) {
+         quantity = warehouse.processShipment(productId, quantity, null);
       }
    }
 
