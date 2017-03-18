@@ -18,7 +18,7 @@ public class Product implements Serializable {
       this.id = PRODUCT_STRING + (ProductIdServer.instance()).getId();
       this.name = name;
       this.price = price;
-      this.quantity = 100;
+      this.quantity = 0;
       this.supplierIds = new LinkedList<String>();
       this.waitlistedOrders = new LinkedList<WaitlistItem>();
    }
@@ -85,8 +85,8 @@ public class Product implements Serializable {
       return waitlistedOrders.peek();
    }
 
-   public void popWaitlistedOrder() {
-      waitlistedOrders.remove();
+   public void removeWaitlistItem(WaitlistItem item) {
+      waitlistedOrders.remove(item);
    }
 
    public Iterator<WaitlistItem> getWaitlistedOrders(){

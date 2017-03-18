@@ -145,6 +145,7 @@ public class Client implements Serializable {
       ));
    }
 
+   // returns remaining quantity to be used to fill other others
    public int processWaitlistedOrderItem(Order order, WaitlistItem item, int quantity) {
 
       Invoice invoice = new Invoice(this);
