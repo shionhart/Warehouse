@@ -30,7 +30,7 @@ public class Warehouse implements Serializable {
    public static final int ALREADY_EXISTS     = 7;
 
    /**
-    * Private Singleton Warehouse Constructor
+    * Private Singleton Warehouse constructor
     * This grabs, or creates, the following instances: 
     * Inventory, SupplierList, and ClientList
     */
@@ -47,7 +47,7 @@ public class Warehouse implements Serializable {
     * ProductIdServer, SupplierIdServer, ClientIdServer, OrderIdServer, and 
     * InvoiceIdServer. All of which are managed by the Warehouse.
     * <p>
-    * @return the warehouse singleton instance 
+    * @return the Warehouse singleton instance 
     */
    public static Warehouse instance() {
       if (warehouse == null) {
@@ -83,7 +83,7 @@ public class Warehouse implements Serializable {
    public boolean hasProducts() { return !inventory.isEmpty(); }
 
    /**
-    * Queries the supplier list to find out if it has suppliers.
+    * Queries the supplier list to find out if it has suppliers
     * @return      true if there are suppliers; otherwise, false
     * @see         Supplier
     * @see         SupplierList
@@ -104,7 +104,7 @@ public class Warehouse implements Serializable {
 
    /**
     * Queries the given client and returns whether or not they have any open 
-    * orders, provided the client exists in the client list.
+    * orders, provided the client exists in the client list
     * @param       clientId to be checked if they have orders
     * @return      true if the client exists and has open orders; otherwise, false
     * @see         Client
@@ -121,7 +121,7 @@ public class Warehouse implements Serializable {
 
    /**
     * Queries the given client and returns whether or not they have any open 
-    * wait-listed orders, provided the client exists.
+    * wait-listed orders, provided the client exists
     * @param       clientId to be checked if they have waitlisted orders
     * @return      true if the client exists and has open orders; otherwise, false
     * @see         Client
@@ -139,7 +139,7 @@ public class Warehouse implements Serializable {
 
    /**
     * Queries the given client and returns whether or not they have any invoices,
-    * provided the client exists.
+    * provided the client exists
     * @param       clientId to be checked if they have invoices
     * @return      true if the client exists and has invoices; otherwise, false
     * @see         Client
@@ -156,7 +156,7 @@ public class Warehouse implements Serializable {
 
    /**
     * Queries the given client and returns whether or not they have any completed
-    * transactions, provided the client exists.
+    * transactions, provided the client exists
     * @param       clientId to be checked if they have transactions
     * @return      true if the client exists and has completed transactions; otherwise, false
     * @see         Client
@@ -768,7 +768,7 @@ public class Warehouse implements Serializable {
    }
   
    /**
-    * Helper function for the save function 
+    * Helper function for the save function, which will be used during serialization
     */
    private void writeObject(java.io.ObjectOutputStream output) {
       try {
@@ -780,7 +780,7 @@ public class Warehouse implements Serializable {
    }
   
    /**
-    * Helper function for the retrieve function 
+    * Helper function for the retrieve function, which will be used during serialization
     */
    private void readObject(java.io.ObjectInputStream input) {
       try {

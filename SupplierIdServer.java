@@ -1,14 +1,31 @@
 import java.io.*;
 
+/**
+ * Id server used for serialization of the Supplier/SupplierList
+ * @author      Shion Steel Hart <shionhart@gmail.com>
+ * @version     1.0
+ * @since       1.0
+ */
 public class SupplierIdServer implements Serializable {
 
    private static final long serialVersionUID = 1L;
    private  int idCounter;
    private static SupplierIdServer server;
+   
+   /**
+    * Private SupplierIdServer constructor
+    */
    private SupplierIdServer() {
       idCounter = 1;
    }
    
+   /**
+    * Singleton SupplierIdServer Constructor
+    * <p>
+    * This grabs, or creates, the SupplierIdServer
+    * <p>
+    * @return the SupplierIdServer singleton instance 
+    */
    public static SupplierIdServer instance() {
       if (server == null) {
          return (server = new SupplierIdServer());
@@ -17,6 +34,10 @@ public class SupplierIdServer implements Serializable {
       }
    }
   
+   /**
+    * Queries the next id counter
+    * @return      the next id counter
+    */
    public int getId() {
       return idCounter++;
    }
@@ -29,6 +50,9 @@ public class SupplierIdServer implements Serializable {
       return ("SupplierIdServer" + idCounter);
    }
   
+   /**
+    * Retrieve a previously stored state for the SupplierIdServer
+    */
    public static void retrieve(ObjectInputStream input) {
       try {
          server = (SupplierIdServer) input.readObject();
@@ -39,6 +63,10 @@ public class SupplierIdServer implements Serializable {
       }
    }
   
+   /**
+    * Helper function for the save function in Warehouse, which will be used during serialization
+    * @see Warehouse
+    */
    private void writeObject(java.io.ObjectOutputStream output) throws IOException {
       try {
          output.defaultWriteObject();
@@ -48,6 +76,10 @@ public class SupplierIdServer implements Serializable {
       }
    }
   
+   /**
+    * Helper function for the retrieve function in Warehouse, which will be used during serialization
+    * @see Warehouse
+    */
    private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
       try {
          input.defaultReadObject();
