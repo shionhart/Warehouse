@@ -1,0 +1,6 @@
+finish:
+   formatting in the end
+   listProductWaitlist
+   list all transaction for a client
+   list all manufacturer/suppliers price
+   accept client payment for balance on account

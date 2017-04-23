@@ -57,6 +57,10 @@ public class Supplier implements Serializable {
       return productIds.remove(productId);
    }
   
+   /**
+    * Generate a string when the object is used is scalar context which holds are relevent information
+    * @return      Returns the formated string of relevant information about the object
+    */
    public String toString() {
       return String.format("[%s] is a supplier with name: [%s]", id, name);
    }

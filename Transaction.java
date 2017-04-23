@@ -31,6 +31,10 @@ public class Transaction implements Serializable {
       return date.get(Calendar.MONTH) + "/" + date.get(Calendar.DATE) + "/" + date.get(Calendar.YEAR);
    }
   
+   /**
+    * Generate a string when the object is used is scalar context which holds are relevent information
+    * @return      Returns the formated string of relevant information about the object
+    */
    public String toString(){
       return String.format("%s\t%10s\t%s", getDate(), type, description);
    }
