@@ -66,6 +66,7 @@ public class InvoiceIdServer implements Serializable {
    /**
     * Helper function for the save function in Warehouse, which will be used during serialization
     * @see Warehouse
+    * @throws IOException when the serialized output stream fails to write successfully
     */
    private void writeObject(java.io.ObjectOutputStream output) throws IOException {
       try {
@@ -79,6 +80,9 @@ public class InvoiceIdServer implements Serializable {
    /**
     * Helper function for the retrieve function in Warehouse, which will be used during serialization
     * @see Warehouse
+    * @throws IOException when the serialized input stream fails to read successfully
+    * @throws ClassNotFoundException when the serialized input stream fails to find the class needed for the next
+    *         serialized block
     */
    private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
       try {
