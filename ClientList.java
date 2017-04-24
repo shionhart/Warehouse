@@ -8,9 +8,25 @@ import java.io.*;
  * @since       1.0
  */
 public class ClientList implements Serializable {
+
+   /**
+    * Used for serialization
+    */
    private static final long serialVersionUID = 1L;
+
+   /**
+    * Singleton instance of self
+    */
    private static ClientList clientList;
+   
+   /**
+    * The data structure used to hold the clients, so ClientList can manage
+    */
    private List<Client> clients = new LinkedList<Client>();
+   
+   /**
+    * The data structure used to hold the clients with a balance, so ClientList can manage
+    */
    private List<Client> clientsWithBalance = new LinkedList<Client>();
    
    /**
@@ -36,6 +52,8 @@ public class ClientList implements Serializable {
    /**
     * Queries the list of clients to find out if the list is empty or not
     * @return      true if there are no clients in the list; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Supplier
     */
    public boolean isEmpty() {
@@ -46,6 +64,8 @@ public class ClientList implements Serializable {
     * Inserts the given client into the list of clients
     * @param       client is the client object to be added to the clients list
     * @return      true if the client was successfully added; otherwise, false
+    * @pre         None
+    * @post        The client specified will exist in the system
     * @see         Client
     */
    public boolean insertClient(Client client) {
@@ -55,6 +75,8 @@ public class ClientList implements Serializable {
    /**
     * Queries the list of clients
     * @return      An iterator to navigate through the list of clients
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public Iterator<Client> getClients(){
@@ -64,6 +86,8 @@ public class ClientList implements Serializable {
    /**
     * Queries the list of clients and finds out if any have balances on their account
     * @return      true if there is a client with an unpaid balance; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public boolean hasUnpaid() {
@@ -79,6 +103,8 @@ public class ClientList implements Serializable {
    /**
     * Queries the list of clients with unpaid balances, after compiling the list
     * @return      An iterator to navigate through the list of clients with unpaid balances
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public Iterator<Client> getUnpaid() {
@@ -96,6 +122,8 @@ public class ClientList implements Serializable {
     * Searches for a client's existence within the list of clients, based on the parameters given
     * @param       clientId of the client to search for within the list of clients
     * @return      The found client object if the client is found in the list of clients; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public Client find(String clientId) {
@@ -111,6 +139,8 @@ public class ClientList implements Serializable {
    /**
     * Generate a string when the object is used is scalar context which holds are relevent information
     * @return      Returns the formated string of relevant information about the object
+    * @pre         None
+    * @post        None
     */
    public String toString() {
       return clients.toString();

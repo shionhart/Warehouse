@@ -8,9 +8,25 @@ import java.io.*;
  * @since       1.0
  */
 public class Record implements Serializable {
+   
+   /**
+    * Used for serialization
+    */
    private static final long serialVersionUID = 1L;
+   
+   /**
+    * The record's product
+    */
    private Product product;
+   
+   /**
+    * The amount of the product
+    */
    private int quantity;
+   
+   /**
+    * The price per item of the product
+    */
    private float price;
 
    /**
@@ -29,6 +45,8 @@ public class Record implements Serializable {
    /**
     * Query the record's product
     * @return      Returns the record's product
+    * @pre         None
+    * @post        None
     * @see         Product
     */
    public Product getProduct() {
@@ -38,6 +56,8 @@ public class Record implements Serializable {
    /**
     * Query the record's price per product
     * @return      Returns the record's price per product item
+    * @pre         None
+    * @post        None
     */
    public float getPrice() {
       return price;
@@ -46,6 +66,8 @@ public class Record implements Serializable {
    /**
     * Query the record's quantity needed
     * @return      Returns the record's quantity needed
+    * @pre         None
+    * @post        None
     */
    public int getQuantity() {
       return quantity;
@@ -54,6 +76,8 @@ public class Record implements Serializable {
    /**
     * Generate a string when the object is used is scalar context which holds are relevent information
     * @return      Returns the formated string of relevant information about the object
+    * @pre         None
+    * @post        None
     */
    public String toString() {
       return String.format(

@@ -68,6 +68,8 @@ public class Ui {
    /**
     * Prompts the user for input as a reply to the given prompt passed as a parameter, and then gathers the input
     * @param       prompt is the question, or prompt, that the user will see before entering a string reply
+    * @pre         None
+    * @post        None
     * @return      the input from the user for the given prompt
     * @see         StringTokenizer
     */
@@ -90,6 +92,8 @@ public class Ui {
    /**
     * Prompts the user for a yes or no reply to the given prompt passed as a parameter, and then gathers the input
     * @param       prompt is the question, or prompt, that the user will see before entering a string reply
+    * @pre         None
+    * @post        None
     * @return      true is the answer fits the yes category of options; otherwise false
     */
    private boolean yesOrNo(String prompt) {
@@ -102,6 +106,8 @@ public class Ui {
 
    /**
     * Prompts the user for an integer number corresponding to the command that they want to run
+    * @pre         None
+    * @post        None
     */
    public int getCommand() {
       do {
@@ -118,6 +124,8 @@ public class Ui {
 
    /**
     * Prints the list of command choices and the integer corresponding to that command
+    * @pre         None
+    * @post        None
     */
    public void help() {
       System.out.println("Enter a integer number between 0 and 23 as explained below:");
@@ -151,6 +159,8 @@ public class Ui {
     * Handles the execution of the command corresponding to the integer given, and will continue to execute commands
     * for the user until the command entered corresponds to the exit command. After the exit button is pressed the 
     * program exits.
+    * @pre         None
+    * @post        The commands selected will be executed after they were selected
     */
    public void process() {
       int command;
@@ -186,6 +196,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client name and attempts to add that client to the system
+    * @pre         None
+    * @post        A client will be added to the system
     */
    public void addClient() {
       String name = getToken("Enter client name");
@@ -195,6 +207,8 @@ public class Ui {
 
    /**
     * Prompts the user for a supplier name and attempts to add that supplier to the system
+    * @pre         None
+    * @post        A supplier will be added to the system
     */
    public void addSupplier() {
       String name = getToken("Enter supplier name");
@@ -204,6 +218,8 @@ public class Ui {
 
    /**
     * Prompts the user for a product name, and price, and attempts to add that product to the system
+    * @pre         None
+    * @post        A product will be added to the system
     */
    public void addProduct() {
       String name = getToken("Enter product name");
@@ -223,6 +239,8 @@ public class Ui {
    /**
     * Prints out a list of clients in the system, if clients are in the system; otherwise, 
     * prints how they are no clients in the system
+    * @pre         None
+    * @post        None
     */
    public void showClients() {
       if (warehouse.hasClients()) {
@@ -240,6 +258,8 @@ public class Ui {
    /**
     * Prints out a list of suppliers in the system, if suppliers are in the system; otherwise, 
     * prints how they are no suppliers in the system
+    * @pre         None
+    * @post        None
     */
    public void showSuppliers() {
       if (warehouse.hasSuppliers()) {
@@ -257,6 +277,8 @@ public class Ui {
    /**
     * Prints out a list of products in the system, if products are in the system; otherwise, 
     * prints how they are no products in the system
+    * @pre         None
+    * @post        None
     */
    public void showProducts() {
       if (warehouse.hasProducts()) {
@@ -275,6 +297,8 @@ public class Ui {
 
    /**
     * Prompts the user for a supplier id and product id and associates the two
+    * @pre         None
+    * @post        None
     */
    public void associateProductAndSupplier() {
       String supplierId;
@@ -329,6 +353,8 @@ public class Ui {
 
    /**
     * Prompts the user for a supplier id and product id and disassociates the two
+    * @pre         None
+    * @post        None
     */
    public void disassociateProductAndSupplier() {
       String supplierId;
@@ -383,6 +409,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client id and prints the client's balance
+    * @pre         None
+    * @post        None
     */
    public void getClientBalance() {
       String clientId;
@@ -408,6 +436,8 @@ public class Ui {
    /**
     * Prompts the user for a client id and prints the client's invoices if the client has invoices; otherwise,
     * prints how the client has no invoices
+    * @pre         None
+    * @post        None
     */
    public void getClientInvoices() {
       String clientId;
@@ -442,6 +472,8 @@ public class Ui {
    /**
     * Prompts the user for a client id and prints the client's orders if the client has orders; otherwise,
     * prints how the client has no orders
+    * @pre         None
+    * @post        None
     */
    public void getClientOrders() {
       String clientId;
@@ -480,6 +512,8 @@ public class Ui {
    /**
     * Prompts the user for a client id and creates an order. Loops while the user enters product ids to 
     * add to the order. After the user finishes adding products to the order, the order will be processed
+    * @pre         None
+    * @post        None
     */
    public void createOrder() {
       String clientId;
@@ -563,6 +597,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client id and payment amount. The payment is applied to the client's account
+    * @pre         None
+    * @post        None
     */
    public void acceptClientPayment() {
       String clientId;
@@ -622,6 +658,8 @@ public class Ui {
 
    /**
     * Prompts the user for a product id and prints the waitlisted orders for that product
+    * @pre         None
+    * @post        None
     */
    public void getWaitlistedProductOrders() {
       String productId;
@@ -655,6 +693,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client id and prints the transaction history for that client
+    * @pre         None
+    * @post        None
     */
    public void getClientTransactionHistory() {
       String clientId;
@@ -689,6 +729,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client id and an order id, then prints the records for that order
+    * @pre         None
+    * @post        None
     */
    public void getClientOrderDetails() {
       String clientId;
@@ -732,6 +774,8 @@ public class Ui {
 
    /**
     * Prompts the user for a client id and an invoice id, then prints the records for that invoice
+    * @pre         None
+    * @post        None
     */
    public void getClientInvoiceDetails() {
       String clientId;
@@ -777,6 +821,8 @@ public class Ui {
     * Queries the system and prints out a list of clients with an unpaid balance in the system, 
     * if clients with unpaid balances in the system; otherwise, prints how they are no clients with unpaid balances
     * in the system
+    * @pre         None
+    * @post        None
     */
    public void getClientsWithUnpaidBalance() {
       if (warehouse.hasClientsWithUnpaidBalance()) {
@@ -795,6 +841,8 @@ public class Ui {
    /**
     * Prompts the user for a client id. Queries the system and prints out the list of waitlisted orders for that client, 
     * if that client has waitlisted orders; otherwise, prints how the client has no waitlisted orders in the system
+    * @pre         None
+    * @post        None
     */
    public void getClientsWaitlistedOrders() {
       String clientId;
@@ -835,6 +883,8 @@ public class Ui {
     * Prompts the user for a product id and the quantity of that product id received. Prompts the user if they would 
     * like to fill certain waitlisted orders for a given product. After the items have been cycled over, the remaining
     * amount of the product will be added to the inventories stock
+    * @pre         None
+    * @post        Waitlisted orders will be filled or the product's stock will increase
     */
    public void acceptProductShipment() {
       int quantity;

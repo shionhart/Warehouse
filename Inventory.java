@@ -9,8 +9,20 @@ import java.io.*;
  * @since       1.0
  */
 public class Inventory implements Serializable {
+   
+   /**
+    * Used for serialization
+    */
    private static final long serialVersionUID = 1L;
+
+   /**
+    * Singleton instance of self
+    */
    private static Inventory inventory;
+   
+   /**
+    * The data structure used to hold the products, so Inventory can manage
+    */
    private List<Product> products = new LinkedList<Product>();
    
    /**
@@ -36,6 +48,8 @@ public class Inventory implements Serializable {
    /**
     * Queries the list of products to find out if the list is empty or not
     * @return      true if there are no products in the list; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Product
     */
    public boolean isEmpty() {
@@ -46,6 +60,8 @@ public class Inventory implements Serializable {
     * Inserts the given product into the list of products
     * @param       product is the product object to be added to the products list
     * @return      true if the product was successfully added; otherwise, false
+    * @pre         None
+    * @post        The product specified will exist in the system
     * @see         Product
     */
    public boolean insertProduct(Product product) {
@@ -56,6 +72,8 @@ public class Inventory implements Serializable {
    /**
     * Queries the list of products
     * @return      An iterator to navigate through the list of products
+    * @pre         None
+    * @post        None
     * @see         Product
     */
    public Iterator<Product> getProducts() {
@@ -66,6 +84,8 @@ public class Inventory implements Serializable {
     * Searches for a product's existence within the list of products, based on the parameters given
     * @param       productId of the product to search for within the list of products
     * @return      The found product object if the product is found in the list of products; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Product
     */
    public Product find(String productId) {
@@ -81,6 +101,8 @@ public class Inventory implements Serializable {
    /**
     * Generate a string when the object is used is scalar context which holds are relevent information
     * @return      Returns the formated string of relevant information about the object
+    * @pre         None
+    * @post        None
     */
    public String toString() {
       return products.toString();
@@ -89,7 +111,7 @@ public class Inventory implements Serializable {
    /**
     * Helper function for the save function in Warehouse, which will be used during serialization
     * @pre         An Inventory object needs to be serialized
-    * @post        Am Inventory object will have been serialized
+    * @post        An Inventory object will have been serialized
     * @see         Warehouse
     */
    private void writeObject(java.io.ObjectOutputStream output) {
