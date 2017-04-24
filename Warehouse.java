@@ -11,23 +11,39 @@ import java.io.*;
  */
 public class Warehouse implements Serializable {
 
+   /**
+    * Used for serialization
+    */
    private static final long serialVersionUID = 1L;
+
+   /**
+    * Singleton instance of self
+    */
    private static Warehouse warehouse;
+
+   /**
+    * Used to manage the clients
+    */
    private ClientList clientList;
+   
+   /**
+    * Used to manage the suppliers
+    */
    private SupplierList supplierList;
+
+   /**
+    * Used to manage the products
+    */
    private Inventory inventory;
 
-   /*
-    * Simple int error codes used to send information back to the UI
-    */
-   public static final int SUCCESS            = 0;
-   public static final int OPERATION_FAILED   = 1;
-   public static final int CLIENT_NOT_FOUND   = 2;
-   public static final int SUPPLIER_NOT_FOUND = 3;
-   public static final int PRODUCT_NOT_FOUND  = 4;
-   public static final int ORDER_NOT_FOUND    = 5;
-   public static final int INVOICE_NOT_FOUND  = 6;
-   public static final int ALREADY_EXISTS     = 7;
+   public static final int SUCCESS            = 0; // Used to indicate a function succeeded 
+   public static final int OPERATION_FAILED   = 1; // Used to indicate a function operationally failed
+   public static final int CLIENT_NOT_FOUND   = 2; // Used to indicate a function failed to find the given client id
+   public static final int SUPPLIER_NOT_FOUND = 3; // Used to indicate a function failed to find the given supplier id
+   public static final int PRODUCT_NOT_FOUND  = 4; // Used to indicate a function failed to find the given product id
+   public static final int ORDER_NOT_FOUND    = 5; // Used to indicate a function failed to find the given order id
+   public static final int INVOICE_NOT_FOUND  = 6; // Used to indicate a function failed to find the given invoice id
+   public static final int ALREADY_EXISTS     = 7; // Used to indicate a function failed to add because the operation has already happened
 
    /**
     * Private Singleton Warehouse constructor
@@ -69,6 +85,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the client list to find out if it has clients
     * @return      true if there are clients; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     */
@@ -77,6 +95,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the inventory to find out if it has products in the inventory
     * @return      true if there are products; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Product
     * @see         Inventory
     */
@@ -85,6 +105,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the supplier list to find out if it has suppliers
     * @return      true if there are suppliers; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Supplier
     * @see         SupplierList
     */
@@ -95,6 +117,8 @@ public class Warehouse implements Serializable {
     * with an unpaid balance on their respective accounts, provided any clients
     * exist in the client list.
     * @return      true if the client exists and has a balance; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -107,6 +131,8 @@ public class Warehouse implements Serializable {
     * orders, provided the client exists in the client list
     * @param       clientId to be checked if they have orders
     * @return      true if the client exists and has open orders; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -124,6 +150,8 @@ public class Warehouse implements Serializable {
     * wait-listed orders, provided the client exists
     * @param       clientId to be checked if they have waitlisted orders
     * @return      true if the client exists and has open orders; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -142,6 +170,8 @@ public class Warehouse implements Serializable {
     * provided the client exists
     * @param       clientId to be checked if they have invoices
     * @return      true if the client exists and has invoices; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Invoice
@@ -159,6 +189,8 @@ public class Warehouse implements Serializable {
     * transactions, provided the client exists
     * @param       clientId to be checked if they have transactions
     * @return      true if the client exists and has completed transactions; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Transaction
@@ -175,6 +207,8 @@ public class Warehouse implements Serializable {
     * Creates a client based on the parameters given and adds that client to the client list
     * @param       name of the client to be added to the client list
     * @return      The created client object if the insertion into the client list was successful; otherwise, null
+    * @pre         None
+    * @post        Client of the given name will exist in the system
     * @see         Client
     * @see         ClientList
     */
@@ -190,6 +224,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the client list for the clients in the system
     * @return      An iterator to navigate through the clients in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     */
@@ -200,6 +236,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the client list for the clients, that have an unpaid balance, in the system
     * @return      An iterator to navigate through the clients, that have an unpaid balance, in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     */
@@ -210,6 +248,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the supplier list for the suppliers in the system
     * @return      An iterator to navigate through the suppliers in the system
+    * @pre         None
+    * @post        None
     * @see         Supplier
     * @see         SupplierList
     */
@@ -220,6 +260,8 @@ public class Warehouse implements Serializable {
    /**
     * Queries the inventory for the products in the system
     * @return      An iterator to navigate through the products in the system
+    * @pre         None
+    * @post        None
     * @see         Product
     * @see         Inventory
     */
@@ -232,6 +274,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for, and to search within for the order
     * @param       orderId of the order to search for within the client
     * @return      An iterator to navigate through the records of a given client's order, 
+    * @pre         None
+    * @post        None
     *              provided the client, and order for that client, exist in the system
     * @see         Client
     * @see         ClientList
@@ -250,6 +294,8 @@ public class Warehouse implements Serializable {
     * @param       invoiceId of the invoice to search for within the client
     * @return      An iterator to navigate through the records of a given client's invoice, 
     *              provided the client, and order for that client, exist in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Invoice
@@ -266,6 +312,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for, and return all orders for that client
     * @return      An iterator to navigate through the orders for a client,
     *              provided the client exists in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -280,6 +328,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for, and return all invoice for that client
     * @return      An iterator to navigate through the invoices for a client,
     *              provided the client exists in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Invoice
@@ -294,6 +344,8 @@ public class Warehouse implements Serializable {
     * @param       productId of the product to search for, and return all waitlisted orders for that product
     * @return      An iterator to navigate through the waitlisted orders for a product,
     *              provided the product exists in the system
+    * @pre         None
+    * @post        None
     * @see         Product
     * @see         WaitlistItem
     */
@@ -310,6 +362,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for, and return all transactions for that client
     * @return      An iterator to navigate through the transactions for a client,
     *              provided the client exists in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Transaction
@@ -327,6 +381,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for, and return all waitlisted orders for that client
     * @return      An iterator to navigate through the waitlisted orders for a client,
     *              provided the client exists in the system
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -367,6 +423,8 @@ public class Warehouse implements Serializable {
     * Searches for a client's existence in the system, based on the parameters given
     * @param       clientId of the client to search for within the client list
     * @return      The found client object if the client is found in the client list; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     */
@@ -379,6 +437,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for within the client list
     * @param       orderId of the order to search for within the client
     * @return      The found client's order object if the client, and order, are found in the system; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Order
@@ -396,6 +456,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client to search for within the client list
     * @param       invoiceId of the invoice to search for within the client
     * @return      The found client's invoice object if the client, and invoice, are found in the system; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Client
     * @see         ClientList
     * @see         Invoice
@@ -412,6 +474,8 @@ public class Warehouse implements Serializable {
     * Searches for a supplier's existence in the system, based on the parameters given
     * @param       supplierId of the supplier to search for within the supplier list
     * @return      The found supplier object if the supplier is found in the supplier list; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Supplier
     * @see         SupplierList
     */
@@ -423,6 +487,8 @@ public class Warehouse implements Serializable {
     * Searches for a product's existence in the system, based on the parameters given
     * @param       productId of the product to search for within the inventory
     * @return      The found product object if the product is found in the inventory; otherwise, null
+    * @pre         None
+    * @post        None
     * @see         Product
     * @see         Inventory
     */
@@ -434,6 +500,8 @@ public class Warehouse implements Serializable {
     * Queries the client's balance in string format for a given client
     * @param       clientId of the client whos balance will be retrieved
     * @return      The client's balance in string format if the client is in the client list; otherwise null
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public String getClientBalanceStr(String clientId) {
@@ -448,6 +516,8 @@ public class Warehouse implements Serializable {
     * Queries the client's balance for a given client
     * @param       clientId of the client whos balance will be retrieved
     * @return      The client's balance if the client is in the client list; otherwise null
+    * @pre         None
+    * @post        None
     * @see         Client
     */
    public float getClientBalance(String clientId) {
@@ -460,6 +530,9 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client whos balance will be reduced based on the payment amount given
     * @param       clientPayment the amount wanted to be applied to the client's account
     * @return      Static int status of the transaction which will be SUCCESS if the client is in the client list; otherwise CLIENT_NOT_FOUND
+    * @pre         The client for the clientId specified must exist and have a balance. Also, the clientPayment but be less than or equal to the balance on
+    *              the client's account
+    * @post        The client's balance will have been reduced the amount given 
     * @see         Client
     */
    public int acceptClientPayment(String clientId, float clientPayment) {
@@ -476,6 +549,8 @@ public class Warehouse implements Serializable {
     * Creates a supplier based on the parameters given and adds that supplier to the supplier list
     * @param       name of the supplier to be added to the supplier list
     * @return      The created supplier object if the insertion into the supplier list was successful; otherwise, null
+    * @pre         None
+    * @post        The supplier with the name specified will exist in the system
     * @see         Supplier
     * @see         SupplierList
     */
@@ -500,6 +575,8 @@ public class Warehouse implements Serializable {
     * @param       productId of the product to be associated to the supplier
     * @param       supplierId of the supplier to be associated to the product
     * @return      Static int status of the transaction (which includes: PRODUCT_NOT_FOUND, SUPPLIER_NOT_FOUND, ALREADY_EXISTS, SUCCESS, OPERATION_FAILED)
+    * @pre         The product and supplier exist, and are not associated
+    * @post        The product and supplier are now associated
     * @see         Product
     * @see         Inventory
     * @see         Supplier
@@ -531,6 +608,8 @@ public class Warehouse implements Serializable {
     * @param       productId of the product to be disassociated to the supplier
     * @param       supplierId of the supplier to be disassociated to the product
     * @return      Static int status of the transaction (which includes: PRODUCT_NOT_FOUND, SUPPLIER_NOT_FOUND, ALREADY_EXISTS, SUCCESS, OPERATION_FAILED)
+    * @pre         The product and supplier exist, and are associated
+    * @post        The product and supplier will no longer be associated
     * @see         Product
     * @see         Inventory
     * @see         Supplier
@@ -562,6 +641,8 @@ public class Warehouse implements Serializable {
     * @param       name of the product to be added to the inventory
     * @param       price of the product to be added to the inventory
     * @return      The created product object if the insertion into the inventory was successful; otherwise, null
+    * @pre         None
+    * @post        The product with the name, and price, specified will exist in the system
     * @see         Product
     * @see         Inventory
     */
@@ -585,6 +666,8 @@ public class Warehouse implements Serializable {
     * Creates an empty order for a client
     * @param       clientId of the client that is having the empty order created
     * @return      The created order's id will be created if the order was created and associated with the client successfully; otherwise, null
+    * @pre         The client exists
+    * @post        The client will have an empty order created on their account
     * @see         Client
     * @see         Order
     */
@@ -635,6 +718,8 @@ public class Warehouse implements Serializable {
     * @param       clientId of the client that is having their order finalized 
     * @param       orderId of the client's order that is being finalized 
     * @return      Static int status of the transaction (which includes: CLIENT_NOT_FOUND, ORDER_NOT_FOUND, SUCCESS)
+    * @pre         The client and order exist. The order is completed and is ready to be processed
+    * @post        The order will be processed and filled with the items in stock, items not filled will be waitlisted
     * @see         Client
     * @see         Product
     * @see         Order
@@ -659,6 +744,8 @@ public class Warehouse implements Serializable {
     * provided the product exists.
     * @param       productId to be checked if it has waitlisted orders
     * @return      true if the product exists and has waitlisted orders; otherwise, false
+    * @pre         None
+    * @post        None
     * @see         Product
     * @see         Inventory
     * @see         WaitlistItem
@@ -678,6 +765,8 @@ public class Warehouse implements Serializable {
     * @param       quantity of the product received in the shipment
     * @param       item which is a specific waitlisted order to be filled; if null, the products will 
     *              fill the next waitlisted order in line
+    * @pre         None
+    * @post        None
     * @return      the remaining quantity of the product, from the shipment, that can be used elsewhere
     * @see         Product
     * @see         Inventory
@@ -715,6 +804,8 @@ public class Warehouse implements Serializable {
     * Retrieve a previously stored state for the Warehouse from a file called WarehouseData 
     * that holds the serialized Warehouse object
     * @return      the stored Warehouse object that was retrieved 
+    * @pre         None
+    * @post        The warehouse and all components of it will be loaded
     * @see         ProductIdServer
     * @see         SupplierIdServer
     * @see         ClientIdServer
@@ -744,6 +835,8 @@ public class Warehouse implements Serializable {
    /**
     * Store the Warehouse's state into a file called WarehouseData, in a serialized format
     * @return      true is the storing of the serialized object was successful; otherwise, false 
+    * @pre         None
+    * @post        A file containing the serialized state that the warehouse was in when this was called
     * @see         ProductIdServer
     * @see         SupplierIdServer
     * @see         ClientIdServer

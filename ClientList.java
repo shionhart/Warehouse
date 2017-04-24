@@ -118,7 +118,9 @@ public class ClientList implements Serializable {
   
    /**
     * Helper function for the save function in Warehouse, which will be used during serialization
-    * @see Warehouse
+    * @pre         A ClientList object needs to be serialized
+    * @post        A ClientList object will have been serialized
+    * @see         Warehouse
     */
    private void writeObject(java.io.ObjectOutputStream output) {
       try {
@@ -131,7 +133,9 @@ public class ClientList implements Serializable {
 
    /**
     * Helper function for the retrieve function in Warehouse, which will be used during serialization
-    * @see Warehouse
+    * @pre         A serialized ClientList object needs to be read
+    * @post        A ClientList object will have been read
+    * @see         Warehouse
     */
    private void readObject(java.io.ObjectInputStream input) {
       try {
