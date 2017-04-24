@@ -2,6 +2,12 @@ import java.util.*;
 import java.text.*;
 import java.io.*;
 
+/**
+ * User interface and main driver for the entire application
+ * @author      Shion Steel Hart <shionhart@gmail.com>
+ * @version     1.0
+ * @since       1.0
+ */
 public class Ui {
    private static Ui ui;
    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -33,6 +39,9 @@ public class Ui {
    private static final int RETRIEVE                          = 22;
    private static final int HELP                              = 23;
 
+   /**
+    * Private UI constructor
+    */
    private Ui() {
       if (yesOrNo("Look for saved data and use it?")) {
          retrieve();
@@ -41,6 +50,13 @@ public class Ui {
       }
    }
    
+   /**
+    * Singleton UI Constructor
+    * <p>
+    * This grabs, or creates, the UI
+    * <p>
+    * @return the UI singleton instance 
+    */
    public static Ui instance() {
       if (ui == null) {
          return ui = new Ui();
@@ -49,6 +65,12 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for input as a reply to the given prompt passed as a parameter, and then gathers the input
+    * @param       prompt is the question, or prompt, that the user will see before entering a string reply
+    * @return      the input from the user for the given prompt
+    * @see         StringTokenizer
+    */
    public String getToken(String prompt) {
       do {
          try {
@@ -64,7 +86,12 @@ public class Ui {
          }
       } while (true);
    }
-  
+   
+   /**
+    * Prompts the user for a yes or no reply to the given prompt passed as a parameter, and then gathers the input
+    * @param       prompt is the question, or prompt, that the user will see before entering a string reply
+    * @return      true is the answer fits the yes category of options; otherwise false
+    */
    private boolean yesOrNo(String prompt) {
       String more = getToken(prompt + " (Y|y)[es] or anything else for no");
       if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
@@ -73,6 +100,9 @@ public class Ui {
       return true;
    }
 
+   /**
+    * Prompts the user for an integer number corresponding to the command that they want to run
+    */
    public int getCommand() {
       do {
          try {
@@ -86,8 +116,11 @@ public class Ui {
       } while (true);
    }
 
+   /**
+    * Prints the list of command choices and the integer corresponding to that command
+    */
    public void help() {
-      System.out.println("Enter a integer number between 0 and 11 as explained below:");
+      System.out.println("Enter a integer number between 0 and 23 as explained below:");
       System.out.println(EXIT                              + " to exit");
       System.out.println(ADD_CLIENT                        + " to add a client");
       System.out.println(ADD_SUPPLIER                      + " to add a supplier");
@@ -114,6 +147,11 @@ public class Ui {
       System.out.println(HELP                              + " for help");
    }
 
+   /**
+    * Handles the execution of the command corresponding to the integer given, and will continue to execute commands
+    * for the user until the command entered corresponds to the exit command. After the exit button is pressed the 
+    * program exits.
+    */
    public void process() {
       int command;
       help();
@@ -146,18 +184,27 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client name and attempts to add that client to the system
+    */
    public void addClient() {
       String name = getToken("Enter client name");
       Client client = warehouse.addClient(name);
       System.out.println("Added client " + client);
    }
 
+   /**
+    * Prompts the user for a supplier name and attempts to add that supplier to the system
+    */
    public void addSupplier() {
       String name = getToken("Enter supplier name");
       Supplier supplier = warehouse.addSupplier(name);
       System.out.println("Added supplier " + supplier);
    }
 
+   /**
+    * Prompts the user for a product name, and price, and attempts to add that product to the system
+    */
    public void addProduct() {
       String name = getToken("Enter product name");
       float price;
@@ -173,6 +220,10 @@ public class Ui {
       System.out.println("Added product " + product);
    }
 
+   /**
+    * Prints out a list of clients in the system, if clients are in the system; otherwise, 
+    * prints how they are no clients in the system
+    */
    public void showClients() {
       if (warehouse.hasClients()) {
          System.out.println("System has client(s):");
@@ -186,6 +237,10 @@ public class Ui {
       }
    }
 
+   /**
+    * Prints out a list of suppliers in the system, if suppliers are in the system; otherwise, 
+    * prints how they are no suppliers in the system
+    */
    public void showSuppliers() {
       if (warehouse.hasSuppliers()) {
          System.out.println("System has supplier(s):");
@@ -199,6 +254,10 @@ public class Ui {
       }
    }
 
+   /**
+    * Prints out a list of products in the system, if products are in the system; otherwise, 
+    * prints how they are no products in the system
+    */
    public void showProducts() {
       if (warehouse.hasProducts()) {
          
@@ -214,6 +273,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a supplier id and product id and associates the two
+    */
    public void associateProductAndSupplier() {
       String supplierId;
       Supplier supplier;
@@ -265,6 +327,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a supplier id and product id and disassociates the two
+    */
    public void disassociateProductAndSupplier() {
       String supplierId;
       Supplier supplier;
@@ -316,6 +381,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and prints the client's balance
+    */
    public void getClientBalance() {
       String clientId;
       Client client;
@@ -337,6 +405,10 @@ public class Ui {
       System.out.println(String.format("[%s] has balance [%s]", clientId, clientBalance));
    }
 
+   /**
+    * Prompts the user for a client id and prints the client's invoices if the client has invoices; otherwise,
+    * prints how the client has no invoices
+    */
    public void getClientInvoices() {
       String clientId;
       Client client;
@@ -367,6 +439,10 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and prints the client's orders if the client has orders; otherwise,
+    * prints how the client has no orders
+    */
    public void getClientOrders() {
       String clientId;
       Client client;
@@ -401,6 +477,10 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and creates an order. Loops while the user enters product ids to 
+    * add to the order. After the user finishes adding products to the order, the order will be processed
+    */
    public void createOrder() {
       String clientId;
       Client client;
@@ -481,6 +561,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and payment amount. The payment is applied to the client's account
+    */
    public void acceptClientPayment() {
       String clientId;
       Client client;
@@ -537,6 +620,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a product id and prints the waitlisted orders for that product
+    */
    public void getWaitlistedProductOrders() {
       String productId;
       Product product;
@@ -567,6 +653,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and prints the transaction history for that client
+    */
    public void getClientTransactionHistory() {
       String clientId;
       Client client;
@@ -598,6 +687,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and an order id, then prints the records for that order
+    */
    public void getClientOrderDetails() {
       String clientId;
       String orderId;
@@ -638,6 +730,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id and an invoice id, then prints the records for that invoice
+    */
    public void getClientInvoiceDetails() {
       String clientId;
       Client client;
@@ -678,6 +773,11 @@ public class Ui {
       }
    }
 
+   /**
+    * Queries the system and prints out a list of clients with an unpaid balance in the system, 
+    * if clients with unpaid balances in the system; otherwise, prints how they are no clients with unpaid balances
+    * in the system
+    */
    public void getClientsWithUnpaidBalance() {
       if (warehouse.hasClientsWithUnpaidBalance()) {
          System.out.println("System has client(s) with unpaid balances:");
@@ -692,6 +792,10 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a client id. Queries the system and prints out the list of waitlisted orders for that client, 
+    * if that client has waitlisted orders; otherwise, prints how the client has no waitlisted orders in the system
+    */
    public void getClientsWaitlistedOrders() {
       String clientId;
       Client client;
@@ -727,6 +831,11 @@ public class Ui {
       }
    }
 
+   /**
+    * Prompts the user for a product id and the quantity of that product id received. Prompts the user if they would 
+    * like to fill certain waitlisted orders for a given product. After the items have been cycled over, the remaining
+    * amount of the product will be added to the inventories stock
+    */
    public void acceptProductShipment() {
       int quantity;
       String  productId;
@@ -785,6 +894,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Helper function to save the system's data into a file
+    */
    private void save() {
       if (warehouse.save()) {
          System.out.println("The warehouse has been successfully saved in the file WarehouseData\n");
@@ -793,6 +905,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Helper function to retrieve the system's data from a file
+    */
    private void retrieve() {
       try {
          Warehouse tempWarehouse = Warehouse.retrieve();
@@ -809,6 +924,9 @@ public class Ui {
       }
    }
 
+   /**
+    * Main function that calls the process function to start
+    */
    public static void main(String[] s) {
       Ui.instance().process();
    }
